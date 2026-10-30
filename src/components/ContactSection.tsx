@@ -1,0 +1,130 @@
+"use client";
+
+import { useRef, useState } from "react";
+import { portfolioContent, type ContactButton } from "@/data/content";
+import { Briefcase, Download, Terminal, Mail, Globe } from "lucide-react";
+
+function MagneticButtonWrapper({
+  button,
+}: {
+  button: ContactButton;
+}) {
+  const btnRef = useRef<HTMLAnchorElement>(null);
+  const [offset, setOffset] = useState({ x: 0, y: 0 });
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    const el = btnRef.current;
+    if (!el) return;
+    const rect = el.getBoundingClientRect();
+    const x = e.clientX - rect.left - rect.width / 2;
+    const y = e.clientY - rect.top - rect.height / 2;
+
+    // Gentle magnetic pull (factor of 0.25)
+    setOffset({ x: x * 0.28, y: y * 0.28 });
+  };
+
+  const handleMouseLeave = () => {
+    setOffset({ x: 0, y: 0 });
+  };
+
+  const icons: Record<string, React.ElementType> = {
+    linkedin: Briefcase,
+    cv: Download,
+    github: Terminal,
+  };
+
+  const IconComponent = icons[button.type] || Briefcase;
+
+  const styleClasses =
+    button.type === "linkedin"
+      ? "bg-primary-container hover:bg-tertiary-container text-on-primary-container shadow-[0_0_20px_rgba(77,142,255,0.35)]"
+      : button.type === "cv"
+      ? "bg-surface-container-high hover:bg-surface-container-highest text-on-surface border border-outline-variant/50"
+      : "bg-surface-container/60 hover:bg-surface-container-high text-on-surface border border-outline-variant/30";
+
+  return (
+    <a
+      ref={btnRef}
+      href={button.href}
+      target={button.isPlaceholder ? undefined : "_blank"}
+      rel="noreferrer"
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      style={{
+        transform: `translate3d(${offset.x}px, ${offset.y}px, 0)`,
+        transition: offset.x === 0 ? "transform 0.4s ease-out" : "none",
+      }}
+      className={`interactive inline-flex items-center gap-2.5 px-7 py-3.5 rounded-full font-syne text-xs sm:text-sm font-semibold transition-colors duration-200 ${styleClasses}`}
+    >
+      <IconComponent className="w-4 h-4" />
+      <span>{button.label}</span>
+    </a>
+  );
+}
+
+export default function ContactSection() {
+  const { contact, personal } = portfolioContent;
+
+  return (
+    <section
+      id="contacto"
+      className="relative z-10 w-full max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-12 pt-16 pb-20"
+    >
+      <div className="relative rounded-3xl bg-surface-container-lowest/90 border border-outline-variant/40 p-8 sm:p-12 lg:p-16 text-center overflow-hidden shadow-2xl">
+        {/* Glow Ambient Light Center */}
+        <div
+          className="pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[350px] sm:w-[550px] h-[350px] bg-primary/10 rounded-full blur-[110px]"
+          aria-hidden="true"
+        />
+
+        <div className="relative z-10 max-w-3xl mx-auto flex flex-col items-center">
+          <div className="inline-flex items-center gap-2 font-mono text-xs text-primary uppercase tracking-widest mb-4">
+            <span>{contact.badge}</span>
+          </div>
+
+          <h2 className="font-syne text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-on-surface uppercase mb-6 leading-tight">
+            {contact.heading}
+          </h2>
+
+          <p className="font-inter text-base sm:text-lg text-on-surface-variant mb-10 max-w-xl leading-relaxed">
+            {contact.description}
+          </p>
+
+          {/* Magnetic Buttons Row */}
+          <div className="flex flex-wrap items-center justify-center gap-4 mb-12">
+            {contact.buttons.map((button, index) => (
+              <MagneticButtonWrapper key={index} button={button} />
+            ))}
+          </div>
+
+          {/* Direct Details Footer */}
+          <div className="w-full pt-8 border-t border-outline-variant/20 flex flex-col sm:flex-row items-center justify-center gap-6 sm:gap-10 font-mono text-xs text-on-surface-variant">
+            <div className="flex items-center gap-2">
+              <Mail className="w-4 h-4 text-primary" />
+              <span>{contact.emailLabel}</span>
+              <a
+                href={`mailto:${personal.email}`}
+                className="interactive text-on-surface hover:text-primary transition-colors font-medium"
+              >
+                {personal.email}
+              </a>
+            </div>
+
+            <div className="flex items-center gap-2">
+              <Globe className="w-4 h-4 text-primary" />
+              <span>{contact.websiteLabel}</span>
+              <a
+                href={personal.website}
+                target="_blank"
+                rel="noreferrer"
+                className="interactive text-on-surface hover:text-primary transition-colors font-medium"
+              >
+                zaos.com
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}

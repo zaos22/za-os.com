@@ -1,0 +1,200 @@
+@import "tailwindcss";
+@config "../../tailwind.config.ts";
+
+:root {
+  /* Surface System */
+  --color-surface: #131313;
+  --color-surface-dim: #131313;
+  --color-surface-bright: #393939;
+  --color-surface-container-lowest: #0e0e0e;
+  --color-surface-container-low: #1c1b1b;
+  --color-surface-container: #201f1f;
+  --color-surface-container-high: #2a2a2a;
+  --color-surface-container-highest: #353534;
+  --color-surface-variant: #353534;
+
+  /* Typography & Foreground */
+  --color-on-surface: #e5e2e1;
+  --color-on-surface-variant: #c2c6d6;
+  --color-inverse-surface: #e5e2e1;
+  --color-inverse-on-surface: #313030;
+  --color-outline: #8c909f;
+  --color-outline-variant: #424754;
+
+  /* Accent & Interactive (Electric Blue Spectrum) */
+  --color-surface-tint: #adc6ff;
+  --color-primary: #adc6ff;
+  --color-on-primary: #002e6a;
+  --color-primary-container: #4d8eff;
+  --color-on-primary-container: #00285d;
+  --color-inverse-primary: #005ac2;
+  --color-secondary: #a4c9ff;
+  --color-on-secondary: #00315d;
+  --color-secondary-container: #0267b8;
+  --color-on-secondary-container: #d6e5ff;
+  --color-tertiary: #b4c5ff;
+  --color-on-tertiary: #002a78;
+  --color-tertiary-container: #618bff;
+  --color-on-tertiary-container: #002469;
+
+  --color-accent-main: #3b82f6;
+  --color-accent-hover: #60a5fa;
+  --color-accent-deep: #2563eb;
+
+  /* Error Tokens */
+  --color-error: #ffb4ab;
+  --color-on-error: #690005;
+  --color-error-container: #93000a;
+  --color-on-error-container: #ffdad6;
+
+  /* Base Canvas */
+  --color-background: #131313;
+  --color-on-background: #e5e2e1;
+}
+
+@theme {
+  --color-surface: var(--color-surface);
+  --color-surface-dim: var(--color-surface-dim);
+  --color-surface-bright: var(--color-surface-bright);
+  --color-surface-container-lowest: var(--color-surface-container-lowest);
+  --color-surface-container-low: var(--color-surface-container-low);
+  --color-surface-container: var(--color-surface-container);
+  --color-surface-container-high: var(--color-surface-container-high);
+  --color-surface-container-highest: var(--color-surface-container-highest);
+  --color-surface-variant: var(--color-surface-variant);
+  
+  --color-on-surface: var(--color-on-surface);
+  --color-on-surface-variant: var(--color-on-surface-variant);
+  --color-inverse-surface: var(--color-inverse-surface);
+  --color-inverse-on-surface: var(--color-inverse-on-surface);
+  --color-outline: var(--color-outline);
+  --color-outline-variant: var(--color-outline-variant);
+
+  --color-primary: var(--color-primary);
+  --color-on-primary: var(--color-on-primary);
+  --color-primary-container: var(--color-primary-container);
+  --color-on-primary-container: var(--color-on-primary-container);
+  --color-inverse-primary: var(--color-inverse-primary);
+  
+  --color-secondary: var(--color-secondary);
+  --color-on-secondary: var(--color-on-secondary);
+  --color-secondary-container: var(--color-secondary-container);
+  --color-on-secondary-container: var(--color-on-secondary-container);
+  
+  --color-tertiary: var(--color-tertiary);
+  --color-on-tertiary: var(--color-on-tertiary);
+  --color-tertiary-container: var(--color-tertiary-container);
+  --color-on-tertiary-container: var(--color-on-tertiary-container);
+
+  --color-accent-main: var(--color-accent-main);
+  --color-accent-hover: var(--color-accent-hover);
+  --color-accent-deep: var(--color-accent-deep);
+
+  --color-background: var(--color-background);
+  --color-on-background: var(--color-on-background);
+
+  --font-syne: var(--font-syne);
+  --font-inter: var(--font-inter);
+  --font-mono: var(--font-mono);
+}
+
+/* Custom Base & Accessibility */
+html {
+  scroll-behavior: smooth;
+  color-scheme: dark;
+}
+
+body {
+  background-color: var(--color-surface);
+  color: var(--color-on-surface);
+  font-family: var(--font-inter), sans-serif;
+  overflow-x: hidden;
+  selection-background-color: var(--color-primary-container);
+  selection-color: var(--color-on-primary-container);
+}
+
+::selection {
+  background: var(--color-primary-container);
+  color: var(--color-on-primary-container);
+}
+
+/* Marquee Animations */
+@keyframes marquee {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-marquee {
+  display: flex;
+  width: max-content;
+  animation: marquee 28s linear infinite;
+}
+
+.animate-marquee:hover {
+  animation-play-state: paused;
+}
+
+/* Glassmorphism Utilities */
+.glass-panel {
+  background: rgba(18, 18, 18, 0.8);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--color-outline-variant);
+}
+
+.glass-panel-elevated {
+  background: rgba(24, 24, 27, 0.75);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(63, 63, 70, 0.5);
+}
+
+/* Interactive Cursor Tracking Glow on Desktop Cards */
+.bento-glow-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.bento-glow-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: inherit;
+  background: radial-gradient(
+    400px circle at var(--mouse-x, -999px) var(--mouse-y, -999px),
+    rgba(59, 130, 246, 0.12),
+    transparent 80%
+  );
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.bento-glow-card:hover::before {
+  opacity: 1;
+}
+
+/* Accessibility: prefers-reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .animate-marquee {
+    animation: none !important;
+    overflow-x: auto;
+  }
+}

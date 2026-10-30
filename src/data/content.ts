@@ -76,6 +76,8 @@ export const portfolioContent = {
     title: "OUSSAMA ZAZOU",
     role: "AI Specialist, Full Stack Developer | Google Analytics, CRO Systems",
     description: "Desarrollo web, sistemas y análisis de datos orientado a soluciones digitales funcionales.",
+    image: "/img/hero-image.jpg",
+    imageAlt: "Retrato profesional de Oussama Zazou",
     ctaProjects: "Ver proyectos",
     ctaCv: "Ver CV",
     ctaLinkedIn: "LinkedIn",

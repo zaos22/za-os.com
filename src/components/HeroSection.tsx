@@ -325,7 +325,7 @@ export default function HeroSection() {
       <a
         href="#sobre-mi"
         onClick={handleScrollToDetails}
-        className="interactive relative z-10 flex flex-col items-center gap-2 text-on-surface hover:text-primary font-mono text-[10px] sm:text-xs font-semibold tracking-widest uppercase transition-all duration-200 motion-reduce:transition-none group cursor-pointer text-center px-2"
+        className="interactive relative z-10 mb-6 sm:mb-8 flex flex-col items-center gap-2 text-on-surface hover:text-primary font-mono text-[10px] sm:text-xs font-semibold tracking-widest uppercase transition-all duration-200 motion-reduce:transition-none group cursor-pointer text-center px-2"
         aria-label="Ver detalles y desplazarse al perfil"
       >
         <span className="px-4 py-1.5 rounded-full bg-surface-container-lowest/90 border border-outline-variant/70 group-hover:border-primary backdrop-blur-md shadow-lg text-on-surface group-hover:text-primary transition-colors motion-reduce:transition-none">

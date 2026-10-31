@@ -117,14 +117,14 @@ html {
   color-scheme: dark;
   scrollbar-width: none; /* Firefox */
   -ms-overflow-style: none; /* IE and Edge */
-  overflow-x: hidden;
+  overflow-x: clip;
 }
 
 body {
   background-color: var(--color-surface);
   color: var(--color-on-surface);
   font-family: var(--font-inter), sans-serif;
-  overflow-x: hidden;
+  overflow-x: clip;
   scrollbar-width: none; /* Firefox */
   -ms-overflow-style: none; /* IE and Edge */
   selection-background-color: var(--color-primary-container);

@@ -150,9 +150,10 @@ export default function HeroSection() {
       trigger = ScrollTrigger.create({
         trigger: sectionRef.current,
         start: "top top",
-        end: "bottom bottom",
+        end: "+=40%",
+        pin: true,
         invalidateOnRefresh: true,
-        scrub: prefersReducedMotion ? 0.3 : 0.6,
+        scrub: prefersReducedMotion ? 0.3 : 0.5,
         onUpdate: (self) => {
           stateRef.current.scroll = self.progress;
           updateVisuals();
@@ -160,7 +161,13 @@ export default function HeroSection() {
       });
     }
 
+    const handleResize = () => {
+      ScrollTrigger.refresh();
+    };
+    window.addEventListener("resize", handleResize);
+
     return () => {
+      window.removeEventListener("resize", handleResize);
       if (trigger) trigger.kill();
     };
   }, [updateVisuals]);

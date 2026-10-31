@@ -16,7 +16,6 @@ export default function HeroSection() {
   // Reactive state for toggle & user feedback
   const [isRevealed, setIsRevealed] = useState(false);
   const revealState = useRef({ hover: 0, scroll: 0, manual: 0 });
-  const idleTimerRef = useRef<NodeJS.Timeout | null>(null);
 
   // Helper to re-render visual styles on container and background
   const updateVisuals = useCallback(() => {

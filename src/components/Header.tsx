@@ -34,13 +34,21 @@ export default function Header() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [lastScrollY, mobileMenuOpen]);
 
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setMobileMenuOpen(false);
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, []);
+
   return (
     <header
       className={`fixed top-0 inset-x-0 z-40 flex items-center justify-center pt-2 px-3 sm:px-6 transition-transform duration-300 ease-in-out ${
         isVisible ? "translate-y-0" : "-translate-y-24"
       }`}
     >
-      <div className="h-16 w-full max-w-[1280px] mx-auto px-4 sm:px-6 flex items-center justify-between bg-surface-container-lowest/80 backdrop-blur-xl border border-outline-variant/30 rounded-full shadow-[0_4px_20px_rgba(0,0,0,0.5)]">
+      <div className="h-14 sm:h-16 w-full max-w-[1280px] mx-auto px-4 sm:px-6 flex items-center justify-between bg-surface-container-lowest/80 backdrop-blur-xl border border-outline-variant/30 rounded-full shadow-[0_4px_20px_rgba(0,0,0,0.5)]">
         {/* Brand / Logo */}
         <Link
           href="#"
@@ -72,7 +80,7 @@ export default function Header() {
         </nav>
 
         {/* Right CTA & Avatar */}
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2.5 sm:gap-3">
           <a
             href={portfolioContent.nav.ctaCv.href}
             className="hidden sm:inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-primary-container hover:bg-tertiary-container text-on-primary-container font-inter text-xs font-semibold transition-all duration-200 hover:shadow-[0_0_16px_rgba(77,142,255,0.4)]"
@@ -81,7 +89,7 @@ export default function Header() {
             <ArrowUpRight className="w-3.5 h-3.5" />
           </a>
 
-          <div className="relative w-8 h-8 rounded-full p-[1px] bg-gradient-to-tr from-primary to-accent-main overflow-hidden shadow-sm">
+          <div className="relative w-7 h-7 sm:w-8 sm:h-8 rounded-full p-[1px] bg-gradient-to-tr from-primary to-accent-main overflow-hidden shadow-sm">
             <Image
               src={portfolioContent.personal.profileImage}
               alt={portfolioContent.personal.profileImageAlt}
@@ -96,7 +104,7 @@ export default function Header() {
           <button
             type="button"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="md:hidden flex items-center justify-center w-9 h-9 rounded-full bg-surface-container border border-outline-variant/40 text-on-surface hover:text-primary transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+            className="md:hidden flex items-center justify-center w-8 h-8 rounded-full bg-surface-container border border-outline-variant/40 text-on-surface hover:text-primary transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
             aria-label={mobileMenuOpen ? "Cerrar menú" : "Abrir menú"}
             aria-expanded={mobileMenuOpen}
           >
@@ -105,31 +113,38 @@ export default function Header() {
         </div>
       </div>
 
-      {/* Mobile Drawer Menu */}
+      {/* Mobile Drawer Menu & Overlay */}
       {mobileMenuOpen && (
-        <div className="fixed inset-x-3 top-20 z-50 md:hidden bg-surface-container-lowest/95 backdrop-blur-2xl border border-outline-variant/50 rounded-2xl p-6 shadow-2xl transition-all duration-300">
-          <nav className="flex flex-col gap-4" aria-label="Menú móvil">
-            {portfolioContent.nav.links.map((link) => (
+        <>
+          <div
+            onClick={() => setMobileMenuOpen(false)}
+            className="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm md:hidden animate-fade-in"
+            aria-hidden="true"
+          />
+          <div className="fixed inset-x-3 top-18 z-50 md:hidden bg-surface-container-lowest/95 backdrop-blur-2xl border border-outline-variant/50 rounded-2xl p-6 shadow-2xl transition-all duration-300">
+            <nav className="flex flex-col gap-3" aria-label="Menú móvil">
+              {portfolioContent.nav.links.map((link) => (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="font-syne text-base font-semibold text-on-surface hover:text-primary transition-colors py-2.5 border-b border-outline-variant/20 flex items-center justify-between"
+                >
+                  <span>{link.label}</span>
+                  <ArrowUpRight className="w-4 h-4 text-outline" />
+                </a>
+              ))}
               <a
-                key={link.href}
-                href={link.href}
+                href={portfolioContent.nav.ctaCv.href}
                 onClick={() => setMobileMenuOpen(false)}
-                className="font-syne text-base font-semibold text-on-surface hover:text-primary transition-colors py-2 border-b border-outline-variant/20 flex items-center justify-between"
+                className="mt-2 w-full flex items-center justify-center gap-2 py-3 rounded-xl bg-primary-container text-on-primary-container font-syne text-sm font-semibold transition-colors min-h-[44px]"
               >
-                <span>{link.label}</span>
-                <ArrowUpRight className="w-4 h-4 text-outline" />
+                <span>{portfolioContent.nav.ctaCv.label}</span>
+                <ArrowUpRight className="w-4 h-4" />
               </a>
-            ))}
-            <a
-              href={portfolioContent.nav.ctaCv.href}
-              onClick={() => setMobileMenuOpen(false)}
-              className="mt-2 w-full flex items-center justify-center gap-2 py-3 rounded-xl bg-primary-container text-on-primary-container font-syne text-sm font-semibold transition-colors"
-            >
-              <span>{portfolioContent.nav.ctaCv.label}</span>
-              <ArrowUpRight className="w-4 h-4" />
-            </a>
-          </nav>
-        </div>
+            </nav>
+          </div>
+        </>
       )}
     </header>
   );

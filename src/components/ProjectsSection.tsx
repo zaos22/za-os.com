@@ -18,28 +18,28 @@ function ProjectCard({ project, index }: { project: ProjectItem; index: number }
 
   return (
     <div
-      className="project-stacked-card rounded-3xl bg-surface-container-lowest border border-outline-variant/40 overflow-hidden flex flex-col justify-between shadow-2xl transition-all duration-300 hover:border-primary/50 hover:shadow-[0_0_32px_-4px_rgba(77,142,255,0.25)] mb-8"
+      className="project-stacked-card rounded-3xl bg-surface-container-lowest border border-outline-variant/40 overflow-hidden flex flex-col justify-between shadow-2xl transition-all duration-300 hover:border-primary/50 hover:shadow-[0_0_32px_-4px_rgba(77,142,255,0.25)] mb-6 sm:mb-8"
       style={{ zIndex: 10 + index }}
     >
       <div>
         {/* Browser Mockup Top Bar */}
-        <div className="bg-surface-container-high/90 px-5 py-3 flex items-center justify-between border-b border-outline-variant/30">
-          <div className="flex items-center gap-2">
-            <span className="w-2.5 h-2.5 rounded-full bg-[#EA4335]/70" />
-            <span className="w-2.5 h-2.5 rounded-full bg-[#FBBC05]/70" />
-            <span className="w-2.5 h-2.5 rounded-full bg-[#34A853]/70" />
+        <div className="bg-surface-container-high/90 px-4 sm:px-5 py-2.5 sm:py-3 flex items-center justify-between border-b border-outline-variant/30">
+          <div className="flex items-center gap-1.5 sm:gap-2">
+            <span className="w-2 sm:w-2.5 h-2 sm:h-2.5 rounded-full bg-[#EA4335]/70" />
+            <span className="w-2 sm:w-2.5 h-2 sm:h-2.5 rounded-full bg-[#FBBC05]/70" />
+            <span className="w-2 sm:w-2.5 h-2 sm:h-2.5 rounded-full bg-[#34A853]/70" />
           </div>
 
-          <div className="flex items-center gap-1.5 px-3 py-1 rounded-md bg-surface-container-lowest border border-outline-variant/30 font-mono text-xs text-outline max-w-[220px] sm:max-w-xs truncate">
+          <div className="flex items-center gap-1.5 px-2.5 sm:px-3 py-0.5 sm:py-1 rounded-md bg-surface-container-lowest border border-outline-variant/30 font-mono text-[11px] sm:text-xs text-outline max-w-[180px] xs:max-w-[220px] sm:max-w-xs truncate">
             <Lock className="w-3 h-3 text-primary shrink-0" />
             <span className="truncate">{project.displayUrl}</span>
           </div>
 
-          <div className="w-10" />
+          <div className="w-6 sm:w-10" />
         </div>
 
         {/* Live Preview / Fallback Frame */}
-        <div className="relative w-full h-56 sm:h-72 bg-surface-container-low border-b border-outline-variant/20 overflow-hidden flex items-center justify-center">
+        <div className="relative w-full h-44 xs:h-52 sm:h-72 bg-surface-container-low border-b border-outline-variant/20 overflow-hidden flex items-center justify-center">
           {!project.isPlaceholder && !iframeError ? (
             <iframe
               src={project.url}
@@ -50,14 +50,14 @@ function ProjectCard({ project, index }: { project: ProjectItem; index: number }
               className="w-full h-full border-0 pointer-events-none opacity-90 transition-opacity duration-300 hover:opacity-100"
             />
           ) : (
-            <div className="flex flex-col items-center justify-center p-6 text-center space-y-3">
-              <div className="w-16 h-16 rounded-2xl bg-surface-container flex items-center justify-center border border-outline-variant/40 shadow-inner">
-                <IconComponent className="w-8 h-8 text-primary" />
+            <div className="flex flex-col items-center justify-center p-5 sm:p-6 text-center space-y-2.5 sm:space-y-3">
+              <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-2xl bg-surface-container flex items-center justify-center border border-outline-variant/40 shadow-inner">
+                <IconComponent className="w-6 h-6 sm:w-8 sm:h-8 text-primary" />
               </div>
-              <span className="font-syne text-lg font-bold text-on-surface">
+              <span className="font-syne text-base sm:text-lg font-bold text-on-surface">
                 {project.title}
               </span>
-              <span className="font-mono text-xs text-outline">
+              <span className="font-mono text-[11px] sm:text-xs text-outline max-w-xs">
                 {project.isPlaceholder
                   ? "Despliegue privado en preparación"
                   : "Previsualización interactiva disponible en enlace directo"}
@@ -67,9 +67,9 @@ function ProjectCard({ project, index }: { project: ProjectItem; index: number }
         </div>
 
         {/* Card Body */}
-        <div className="p-6 sm:p-8">
-          <div className="flex items-center justify-between gap-4 mb-2">
-            <h3 className="font-syne text-2xl font-bold text-on-surface">
+        <div className="p-5 sm:p-8">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 sm:gap-4 mb-2.5 sm:mb-2">
+            <h3 className="font-syne text-xl sm:text-2xl font-bold text-on-surface">
               {project.title}
             </h3>
             {project.tags.length > 0 && (
@@ -77,7 +77,7 @@ function ProjectCard({ project, index }: { project: ProjectItem; index: number }
                 {project.tags.map((tag, idx) => (
                   <span
                     key={idx}
-                    className="px-2.5 py-0.5 rounded-full bg-primary/10 border border-primary/30 font-mono text-xs text-primary font-medium"
+                    className="px-2.5 py-0.5 rounded-full bg-primary/10 border border-primary/30 font-mono text-[11px] sm:text-xs text-primary font-medium"
                   >
                     {tag}
                   </span>
@@ -86,16 +86,16 @@ function ProjectCard({ project, index }: { project: ProjectItem; index: number }
             )}
           </div>
 
-          <p className="font-inter text-sm sm:text-base text-on-surface-variant mb-6">
+          <p className="font-inter text-sm sm:text-base text-on-surface-variant mb-4 sm:mb-6 leading-relaxed">
             {project.description}
           </p>
         </div>
       </div>
 
       {/* Card Action Button */}
-      <div className="px-6 pb-6 sm:px-8 sm:pb-8 pt-0">
+      <div className="px-5 pb-5 sm:px-8 sm:pb-8 pt-0">
         {project.isPlaceholder ? (
-          <div className="w-full flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-surface-container/40 border border-outline-variant/30 text-outline font-syne text-xs sm:text-sm font-semibold cursor-not-allowed">
+          <div className="w-full flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-surface-container/40 border border-outline-variant/30 text-outline font-syne text-xs sm:text-sm font-semibold cursor-not-allowed min-h-[44px]">
             <AlertCircle className="w-4 h-4 text-outline" />
             <span>{portfolioContent.projects.ctaComingSoon}</span>
           </div>
@@ -104,7 +104,7 @@ function ProjectCard({ project, index }: { project: ProjectItem; index: number }
             href={project.url}
             target="_blank"
             rel="noreferrer"
-            className="interactive w-full inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-surface-container hover:bg-primary hover:text-on-primary text-on-surface font-syne text-xs sm:text-sm font-semibold border border-outline-variant/40 transition-all duration-200 shadow-sm"
+            className="interactive w-full inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-surface-container hover:bg-primary hover:text-on-primary text-on-surface font-syne text-xs sm:text-sm font-semibold border border-outline-variant/40 transition-all duration-200 shadow-sm min-h-[44px]"
           >
             <span>{portfolioContent.projects.ctaViewLive}</span>
             <ExternalLink className="w-4 h-4" />

@@ -13,13 +13,15 @@ function MagneticButtonWrapper({
   const [offset, setOffset] = useState({ x: 0, y: 0 });
 
   const handleMouseMove = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    // Disable magnetic pull on touch devices
+    if (typeof window !== "undefined" && window.matchMedia("(pointer: coarse)").matches) return;
     const el = btnRef.current;
     if (!el) return;
     const rect = el.getBoundingClientRect();
     const x = e.clientX - rect.left - rect.width / 2;
     const y = e.clientY - rect.top - rect.height / 2;
 
-    // Gentle magnetic pull (factor of 0.25)
+    // Gentle magnetic pull (factor of 0.28)
     setOffset({ x: x * 0.28, y: y * 0.28 });
   };
 
@@ -54,7 +56,7 @@ function MagneticButtonWrapper({
         transform: `translate3d(${offset.x}px, ${offset.y}px, 0)`,
         transition: offset.x === 0 ? "transform 0.4s ease-out" : "none",
       }}
-      className={`interactive inline-flex items-center gap-2.5 px-7 py-3.5 rounded-full font-syne text-xs sm:text-sm font-semibold transition-colors duration-200 ${styleClasses}`}
+      className={`interactive inline-flex items-center justify-center gap-2.5 px-6 sm:px-7 py-3 sm:py-3.5 rounded-full font-syne text-xs sm:text-sm font-semibold transition-colors duration-200 w-full xs:w-auto min-h-[44px] ${styleClasses}`}
     >
       <IconComponent className="w-4 h-4" />
       <span>{button.label}</span>
@@ -68,9 +70,9 @@ export default function ContactSection() {
   return (
     <section
       id="contacto"
-      className="relative z-10 w-full max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-12 pt-16 pb-20"
+      className="relative z-10 w-full max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-12 pt-12 pb-16 sm:pt-16 sm:pb-20"
     >
-      <div className="relative rounded-3xl bg-surface-container-lowest/90 border border-outline-variant/40 p-8 sm:p-12 lg:p-16 text-center overflow-hidden shadow-2xl">
+      <div className="relative rounded-3xl bg-surface-container-lowest/90 border border-outline-variant/40 p-6 sm:p-12 lg:p-16 text-center overflow-hidden shadow-2xl">
         {/* Glow Ambient Light Center */}
         <div
           className="pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[350px] sm:w-[550px] h-[350px] bg-primary/10 rounded-full blur-[110px]"
@@ -78,20 +80,20 @@ export default function ContactSection() {
         />
 
         <div className="relative z-10 max-w-3xl mx-auto flex flex-col items-center">
-          <div className="inline-flex items-center gap-2 font-mono text-xs text-primary uppercase tracking-widest mb-4">
+          <div className="inline-flex items-center gap-2 font-mono text-xs text-primary uppercase tracking-widest mb-3 sm:mb-4">
             <span>{contact.badge}</span>
           </div>
 
-          <h2 className="font-syne text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-on-surface uppercase mb-6 leading-tight">
+          <h2 className="font-syne text-2xl xs:text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-on-surface uppercase mb-4 sm:mb-6 leading-tight">
             {contact.heading}
           </h2>
 
-          <p className="font-inter text-base sm:text-lg text-on-surface-variant mb-10 max-w-xl leading-relaxed">
+          <p className="font-inter text-sm sm:text-lg text-on-surface-variant mb-8 sm:mb-10 max-w-xl leading-relaxed">
             {contact.description}
           </p>
 
           {/* Magnetic Buttons Row */}
-          <div className="flex flex-wrap items-center justify-center gap-4 mb-12">
+          <div className="flex flex-col xs:flex-row flex-wrap items-center justify-center gap-3 sm:gap-4 mb-8 sm:mb-12 w-full max-w-xs xs:max-w-none">
             {contact.buttons.map((button, index) => (
               <MagneticButtonWrapper key={index} button={button} />
             ))}

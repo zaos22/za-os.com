@@ -321,14 +321,14 @@ export default function HeroSection() {
       <a
         href="#sobre-mi"
         onClick={handleScrollToDetails}
-        className="interactive relative z-10 flex flex-col items-center gap-2 text-outline hover:text-primary font-mono text-[10px] tracking-widest uppercase transition-colors group cursor-pointer text-center px-2"
+        className="interactive relative z-10 flex flex-col items-center gap-2 text-on-surface hover:text-primary font-mono text-[10px] sm:text-xs font-semibold tracking-widest uppercase transition-all duration-200 motion-reduce:transition-none group cursor-pointer text-center px-2"
         aria-label="Ver detalles y desplazarse al perfil"
       >
-        <span className="text-[9px] text-outline/80 group-hover:text-primary transition-colors">
+        <span className="px-4 py-1.5 rounded-full bg-surface-container-lowest/90 border border-outline-variant/70 group-hover:border-primary backdrop-blur-md shadow-lg text-on-surface group-hover:text-primary transition-colors motion-reduce:transition-none">
           {portfolioContent.hero.scrollIndicator}
         </span>
-        <div className="w-6 h-10 rounded-full border border-outline-variant/60 group-hover:border-primary/60 flex items-start justify-center p-1 transition-colors">
-          <div className="w-2 h-2.5 rounded-full bg-primary animate-bounce" />
+        <div className="w-6 h-10 rounded-full bg-surface-container-lowest/90 border-2 border-primary/80 group-hover:border-primary backdrop-blur-md shadow-lg flex items-start justify-center p-1 transition-colors motion-reduce:transition-none">
+          <div className="w-2 h-2.5 rounded-full bg-primary animate-bounce motion-reduce:animate-none" />
         </div>
       </a>
     </section>

@@ -4,9 +4,10 @@ import { useEffect, useRef, useState } from "react";
 import { portfolioContent, type ProjectItem } from "@/data/content";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { Lock, ExternalLink, Globe, AlertCircle, Coffee, Compass, Stethoscope } from "lucide-react";
+import { Lock, ExternalLink, Globe, AlertCircle, Coffee, Compass, Stethoscope, Sparkles } from "lucide-react";
 
 const projectIcons: Record<string, React.ElementType> = {
+  zaosfy: Sparkles,
   ohana: Coffee,
   arahmatours: Compass,
   fisiomed: Stethoscope,
@@ -186,7 +187,7 @@ export default function ProjectsSection() {
       {/* Projects Grid */}
       <div
         ref={containerRef}
-        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+        className="grid grid-cols-1 md:grid-cols-2 gap-6"
       >
         {portfolioContent.projects.items.map((project, index) => (
           <ProjectCard key={project.id} project={project} index={index} />

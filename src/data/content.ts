@@ -208,6 +208,15 @@ export const portfolioContent = {
     ctaComingSoon: "Próximamente",
     items: [
       {
+        id: "zaosfy",
+        title: "Zaosfy",
+        description: "Agencia de automatización de negocios e Inteligencia Artificial",
+        url: "https://www.zaosfy.online/",
+        displayUrl: "www.zaosfy.online",
+        tags: ["AI", "Web"],
+        isPlaceholder: false,
+      },
+      {
         id: "ohana",
         title: "Cafetería Ohana",
         description: "Web de cafetería",

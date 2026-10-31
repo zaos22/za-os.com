@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { portfolioContent } from "@/data/content";
@@ -10,7 +10,7 @@ import LanguageSwitcher from "@/components/LanguageSwitcher";
 export default function Header() {
   const [isVisible, setIsVisible] = useState(true);
   const [isAtTop, setIsAtTop] = useState(true);
-  const [lastScrollY, setLastScrollY] = useState(0);
+  const lastScrollYRef = useRef(0);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => {
@@ -20,7 +20,7 @@ export default function Header() {
       setIsAtTop(currentScrollY <= 20);
 
       if (currentScrollY > 100) {
-        if (currentScrollY > lastScrollY && !mobileMenuOpen) {
+        if (currentScrollY > lastScrollYRef.current && !mobileMenuOpen) {
           // Scrolling down
           setIsVisible(false);
         } else {
@@ -31,13 +31,13 @@ export default function Header() {
         setIsVisible(true);
       }
 
-      setLastScrollY(currentScrollY);
+      lastScrollYRef.current = currentScrollY;
     };
 
     handleScroll();
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
-  }, [lastScrollY, mobileMenuOpen]);
+  }, [mobileMenuOpen]);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {

@@ -80,11 +80,14 @@ export default function HeroSection() {
       const bgScale = prefersReducedMotion ? 1 : 1 + s * 0.18;
       const bgOpacity = 1 - s * 0.65;
       const bgBlur = prefersReducedMotion ? 0 : s * 5;
-      gsap.set(bgImageRef.current, {
+      gsap.to(bgImageRef.current, {
         scale: bgScale,
         opacity: bgOpacity,
         filter: bgBlur > 0.2 ? `blur(${bgBlur}px)` : "none",
         transformOrigin: "center 30%",
+        duration: prefersReducedMotion ? 0 : 0.25,
+        ease: "power2.out",
+        overwrite: "auto",
       });
     }
   }, []);
@@ -152,6 +155,7 @@ export default function HeroSection() {
         start: "top top",
         end: "+=75%",
         pin: true,
+        invalidateOnRefresh: true,
         scrub: prefersReducedMotion ? 0.3 : 0.6,
         onUpdate: (self) => {
           stateRef.current.scroll = self.progress;
@@ -235,7 +239,7 @@ export default function HeroSection() {
           fill
           priority
           sizes="100vw"
-          className="object-cover object-[center_20%] sm:object-[center_22%] lg:object-center filter contrast-[1.04] brightness-[0.92] sm:brightness-[0.96]"
+          className="object-cover object-[center_20%] sm:object-[center_24%] lg:object-[center_28%] filter contrast-[1.04] brightness-[0.92] sm:brightness-[0.96] transition-[object-position,filter,transform] duration-500 ease-out motion-reduce:transition-none"
         />
 
         {/* Subtle, non-intrusive edge blends preserving Oussama's portrait */}

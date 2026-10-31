@@ -2,7 +2,7 @@
 
 import { useRef, useState } from "react";
 import { portfolioContent, type ContactButton } from "@/data/content";
-import { Briefcase, Download, Terminal, Mail, Globe } from "lucide-react";
+import { Briefcase, Download, Terminal, Mail } from "lucide-react";
 
 function MagneticButtonWrapper({
   button,
@@ -109,19 +109,6 @@ export default function ContactSection() {
                 className="interactive text-on-surface hover:text-primary transition-colors font-medium"
               >
                 {personal.email}
-              </a>
-            </div>
-
-            <div className="flex items-center gap-2">
-              <Globe className="w-4 h-4 text-primary" />
-              <span>{contact.websiteLabel}</span>
-              <a
-                href={personal.website}
-                target="_blank"
-                rel="noreferrer"
-                className="interactive text-on-surface hover:text-primary transition-colors font-medium"
-              >
-                zaos.com
               </a>
             </div>
           </div>

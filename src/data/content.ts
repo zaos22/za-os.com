@@ -46,9 +46,9 @@ export const portfolioContent = {
     role: "AI Specialist, Full Stack Developer | Google Analytics, CRO Systems",
     shortBio: "Desarrollo web, sistemas y análisis de datos orientado a soluciones digitales funcionales.",
     email: "ozazou2001@gmail.com",
-    website: "https://zaos.com",
+    website: null,
     github: "https://github.com/zaos22",
-    linkedin: "[URL_LINKEDIN]", // TODO: rellenar con URL real de LinkedIn
+    linkedin: "https://www.linkedin.com/in/zaos/",
     cv: "[URL_CV]", // TODO: rellenar con URL real del CV
     profileImage: "/img/foto-perfil.png",
     profileImageAlt: "Fotografía de Oussama Zazou",
@@ -91,7 +91,7 @@ export const portfolioContent = {
     bio: "Desarrollo web, sistemas y análisis de datos orientado a soluciones digitales funcionales.",
     directChannelsLabel: "CANALES DIRECTOS Y ENLACES OFICIALES",
     emailLabel: "CORREO DIRECTO",
-    domainLabel: "SITIO / DOMINIO",
+    linkedinLabel: "LINKEDIN",
     githubLabel: "GITHUB",
   },
 
@@ -186,7 +186,7 @@ export const portfolioContent = {
     issueDate: "28 de octubre de 2026",
     expiryDate: null,
     certId: null,
-    verificationUrl: "[URL_VERIFICACIÓN_CERTIFICADO]", // TODO: rellenar con enlace de verificación oficial
+    verificationUrl: "https://skillshop.credential.net/8111e4e1-2566-4172-97b8-dd70808729b1#acc.VHpfk371",
     ctaVerify: "Verificar certificado",
     valueHeading: "Qué puedo aportar con Google Analytics",
     valueDescription: "Capacidad técnica enfocada en la trazabilidad real, implementaciones de eventos sin suposiciones e integración con Looker Studio para generación de informes.",
@@ -270,8 +270,8 @@ export const portfolioContent = {
     buttons: [
       {
         label: "Ver LinkedIn",
-        href: "[URL_LINKEDIN]", // TODO: rellenar con enlace real
-        isPlaceholder: true,
+        href: "https://www.linkedin.com/in/zaos/",
+        isPlaceholder: false,
         type: "linkedin",
       },
       {
@@ -288,7 +288,6 @@ export const portfolioContent = {
       },
     ] as ContactButton[],
     emailLabel: "Correo directo:",
-    websiteLabel: "Dominio:",
   },
 
   // Footer Section

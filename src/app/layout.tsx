@@ -31,11 +31,11 @@ const jetbrainsMono = JetBrains_Mono({
 export const metadata: Metadata = {
   title: `${portfolioContent.personal.name} | ${portfolioContent.personal.role}`,
   description: portfolioContent.personal.shortBio,
-  metadataBase: new URL(portfolioContent.personal.website),
+  metadataBase: new URL("https://github.com/zaos22"),
   openGraph: {
     title: `${portfolioContent.personal.name} | ${portfolioContent.personal.role}`,
     description: portfolioContent.personal.shortBio,
-    url: portfolioContent.personal.website,
+    url: portfolioContent.personal.linkedin,
     siteName: portfolioContent.personal.name,
     images: [
       {
@@ -68,10 +68,10 @@ export default function RootLayout({
     "@type": "Person",
     name: portfolioContent.personal.name,
     jobTitle: portfolioContent.personal.role,
-    url: portfolioContent.personal.website,
+    url: portfolioContent.personal.linkedin,
     email: portfolioContent.personal.email,
-    sameAs: [portfolioContent.personal.github],
-    image: `${portfolioContent.personal.website}${portfolioContent.personal.profileImage}`,
+    sameAs: [portfolioContent.personal.github, portfolioContent.personal.linkedin],
+    image: portfolioContent.personal.profileImage,
   };
 
   return (

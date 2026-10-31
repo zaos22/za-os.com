@@ -33,12 +33,20 @@ export default function Footer() {
             {personal.email}
           </a>
           <a
-            href={personal.website}
+            href={personal.linkedin}
             target="_blank"
             rel="noreferrer"
             className="interactive hover:text-primary transition-colors"
           >
-            zaos.com
+            LinkedIn
+          </a>
+          <a
+            href={personal.github}
+            target="_blank"
+            rel="noreferrer"
+            className="interactive hover:text-primary transition-colors"
+          >
+            GitHub
           </a>
           <button
             type="button"

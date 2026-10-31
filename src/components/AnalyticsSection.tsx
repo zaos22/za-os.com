@@ -147,14 +147,18 @@ export default function AnalyticsSection() {
                 <span className="text-outline">Emitido:</span>
                 <span className="text-on-surface font-medium">{analyticsData.issueDate}</span>
               </div>
-              <div className="flex items-center justify-between">
-                <span className="text-outline">Válido hasta:</span>
-                <span className="text-on-surface font-medium">{analyticsData.expiryDate}</span>
-              </div>
-              <div className="flex items-center justify-between pt-1.5 border-t border-outline-variant/20">
-                <span className="text-outline">ID de certificado:</span>
-                <span className="text-primary font-bold text-[11px] sm:text-xs truncate ml-2">{analyticsData.certId}</span>
-              </div>
+              {analyticsData.expiryDate && (
+                <div className="flex items-center justify-between">
+                  <span className="text-outline">Válido hasta:</span>
+                  <span className="text-on-surface font-medium">{analyticsData.expiryDate}</span>
+                </div>
+              )}
+              {analyticsData.certId && (
+                <div className="flex items-center justify-between pt-1.5 border-t border-outline-variant/20">
+                  <span className="text-outline">ID de certificado:</span>
+                  <span className="text-primary font-bold text-[11px] sm:text-xs truncate ml-2">{analyticsData.certId}</span>
+                </div>
+              )}
             </div>
 
             {/* Action: Verify Certificate */}

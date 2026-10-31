@@ -184,8 +184,8 @@ export const portfolioContent = {
     title: "Google Analytics Certification (2026)",
     issuer: "Google",
     issueDate: "28 de octubre de 2026",
-    expiryDate: "28 de octubre de 2027",
-    certId: "198624447",
+    expiryDate: null,
+    certId: null,
     verificationUrl: "[URL_VERIFICACIÓN_CERTIFICADO]", // TODO: rellenar con enlace de verificación oficial
     ctaVerify: "Verificar certificado",
     valueHeading: "Qué puedo aportar con Google Analytics",

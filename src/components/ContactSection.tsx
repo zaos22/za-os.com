@@ -84,16 +84,16 @@ export default function ContactSection() {
             <span>{contact.badge}</span>
           </div>
 
-          <h2 className="font-syne text-2xl xs:text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-on-surface uppercase mb-4 sm:mb-6 leading-tight">
+          <h2 className="font-syne text-2xl xs:text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-on-surface uppercase mb-4 sm:mb-6 leading-tight break-words">
             {contact.heading}
           </h2>
 
-          <p className="font-inter text-sm sm:text-lg text-on-surface-variant mb-8 sm:mb-10 max-w-xl leading-relaxed">
+          <p className="font-inter text-sm sm:text-lg text-on-surface-variant mb-8 sm:mb-10 max-w-xl leading-relaxed break-words">
             {contact.description}
           </p>
 
           {/* Magnetic Buttons Row */}
-          <div className="flex flex-col xs:flex-row flex-wrap items-center justify-center gap-3 sm:gap-4 mb-8 sm:mb-12 w-full max-w-xs xs:max-w-none">
+          <div className="flex flex-col xs:flex-row flex-wrap items-center justify-center gap-4 mb-8 sm:mb-12 w-full max-w-xs xs:max-w-none">
             {contact.buttons.map((button, index) => (
               <MagneticButtonWrapper key={index} button={button} />
             ))}
@@ -101,12 +101,13 @@ export default function ContactSection() {
 
           {/* Direct Details Footer */}
           <div className="w-full pt-8 border-t border-outline-variant/20 flex flex-col sm:flex-row items-center justify-center gap-6 sm:gap-10 font-mono text-xs text-on-surface-variant">
-            <div className="flex items-center gap-2">
-              <Mail className="w-4 h-4 text-primary" />
+            <div className="flex flex-wrap items-center justify-center gap-2">
+              <Mail className="w-4 h-4 text-primary shrink-0" />
               <span>{contact.emailLabel}</span>
               <a
                 href={`mailto:${personal.email}`}
-                className="interactive text-on-surface hover:text-primary transition-colors font-medium"
+                translate="no"
+                className="notranslate interactive text-on-surface hover:text-primary transition-colors font-medium"
               >
                 {personal.email}
               </a>

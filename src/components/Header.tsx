@@ -82,7 +82,7 @@ export default function Header() {
           </div>
           <span
             translate="no"
-            className="notranslate hidden sm:inline-block font-syne text-xs md:text-sm font-bold text-on-surface tracking-tight uppercase group-hover:text-primary transition-colors"
+            className="notranslate hidden sm:inline-block font-syne text-xs md:text-sm font-bold text-on-surface tracking-tight uppercase group-hover:text-primary transition-colors whitespace-nowrap"
           >
             {portfolioContent.nav.brandFullName}
           </span>
@@ -90,30 +90,36 @@ export default function Header() {
 
         {/* Desktop Navigation */}
         <nav
-          className="hidden md:flex items-center gap-6 lg:gap-8"
+          className="hidden md:flex items-center gap-4 lg:gap-8"
           aria-label="Navegación principal"
         >
-          {portfolioContent.nav.links.map((link) => (
-            <a
-              key={link.href}
-              href={link.href}
-              className="font-inter text-xs lg:text-sm text-on-surface-variant hover:text-on-surface transition-colors focus-visible:outline-none focus-visible:text-primary"
-            >
-              {link.label}
-            </a>
-          ))}
+          {portfolioContent.nav.links.map((link) => {
+            const isProperNoun = link.label === "Google Analytics";
+            return (
+              <a
+                key={link.href}
+                href={link.href}
+                translate={isProperNoun ? "no" : undefined}
+                className={`font-inter text-xs lg:text-sm text-on-surface-variant hover:text-on-surface transition-colors focus-visible:outline-none focus-visible:text-primary whitespace-nowrap ${
+                  isProperNoun ? "notranslate" : ""
+                }`}
+              >
+                {link.label}
+              </a>
+            );
+          })}
         </nav>
 
         {/* Right CTA & Language Selector */}
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 shrink-0">
           <LanguageSwitcher />
 
           <a
             href={portfolioContent.nav.ctaCv.href}
-            className="hidden sm:inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary-container hover:bg-tertiary-container text-on-primary-container font-inter text-xs font-semibold transition-all duration-200 motion-reduce:transition-none shadow-sm hover:shadow-md"
+            className="hidden sm:inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary-container hover:bg-tertiary-container text-on-primary-container font-inter text-xs font-semibold transition-all duration-200 motion-reduce:transition-none shadow-sm hover:shadow-md whitespace-nowrap"
           >
             <span>{portfolioContent.nav.ctaCv.label}</span>
-            <ArrowUpRight className="w-3.5 h-3.5" />
+            <ArrowUpRight className="w-3.5 h-3.5 shrink-0" />
           </a>
 
           {/* Mobile Menu Toggle Button */}

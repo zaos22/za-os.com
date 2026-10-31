@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState, useCallback } from "react";
 import Image from "next/image";
 import { portfolioContent } from "@/data/content";
-import { ArrowDown, FileText, ExternalLink, Eye, EyeOff } from "lucide-react";
+import { ArrowDown, FileText, ExternalLink } from "lucide-react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
@@ -221,7 +221,7 @@ export default function HeroSection() {
     <section
       ref={sectionRef}
       onClick={handleSectionClick}
-      className="relative min-h-[calc(100vh-4rem)] w-full flex flex-col justify-between items-center px-4 sm:px-6 lg:px-12 pt-4 sm:pt-8 lg:pt-14 pb-6 sm:pb-8 overflow-hidden select-none cursor-default"
+      className="relative min-h-screen w-full flex flex-col justify-between items-center px-4 sm:px-6 lg:px-12 pt-16 sm:pt-20 pb-6 sm:pb-8 overflow-hidden select-none cursor-default"
     >
       {/* 16:9 Full Hero Cinematic Photo Layer */}
       <div
@@ -244,37 +244,6 @@ export default function HeroSection() {
         <div className="absolute inset-0 bg-primary/[0.03] mix-blend-screen pointer-events-none" />
       </div>
 
-      {/* Floating Controls: Clean Photo toggle & Ver Detalles direct navigation */}
-      <div className="relative z-20 w-full max-w-[1280px] mx-auto flex items-center justify-end gap-2 mb-1 sm:mb-0">
-        <button
-          onClick={toggleCleanPhoto}
-          type="button"
-          aria-label={isCleanPhoto ? "Mostrar texto del hero" : "Atenuar texto para ver foto limpia"}
-          className="interactive inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-surface-container/85 hover:bg-surface-container-high border border-outline-variant/40 text-on-surface-variant hover:text-on-surface text-[10px] sm:text-[11px] font-mono tracking-wide backdrop-blur-md transition-all duration-300 shadow-md active:scale-95"
-        >
-          {isCleanPhoto ? (
-            <>
-              <Eye className="w-3.5 h-3.5 text-primary" />
-              <span>Mostrar Texto</span>
-            </>
-          ) : (
-            <>
-              <EyeOff className="w-3.5 h-3.5 text-primary" />
-              <span>Modo Foto Limpia</span>
-            </>
-          )}
-        </button>
-
-        <a
-          href="#sobre-mi"
-          onClick={handleScrollToDetails}
-          className="interactive inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-primary-container hover:bg-tertiary-container text-on-primary-container text-[10px] sm:text-[11px] font-mono font-semibold tracking-wide backdrop-blur-md transition-all duration-300 shadow-md active:scale-95 hover:shadow-[0_0_16px_rgba(77,142,255,0.4)]"
-        >
-          <span>Ver Detalles</span>
-          <ArrowDown className="w-3.5 h-3.5" />
-        </a>
-      </div>
-
       {/* Foreground Hero Typography & Interactive Controls (Reactive Visibility) */}
       <div
         ref={containerRef}
@@ -284,20 +253,21 @@ export default function HeroSection() {
         className="relative z-10 w-full max-w-[1280px] mx-auto text-center flex flex-col items-center my-auto py-4 sm:py-8 will-change-transform"
       >
         {/* Role kicker badge */}
-        <div className="inline-flex items-center justify-center gap-2 mb-4 sm:mb-6 px-3.5 sm:px-4 py-1.5 rounded-full bg-surface-container-high/90 border border-outline-variant/50 text-on-surface font-mono text-[10px] sm:text-xs tracking-wider uppercase backdrop-blur-md shadow-lg max-w-[92vw] text-center leading-snug">
-          <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse shrink-0" />
-          <span>{portfolioContent.hero.role}</span>
+        <div className="inline-flex items-center justify-center gap-2 mb-4 sm:mb-6 px-4 py-2 rounded-2xl sm:rounded-full bg-surface-container-high/90 border border-outline-variant/50 text-on-surface font-mono text-[10px] sm:text-xs tracking-wider uppercase backdrop-blur-md shadow-lg max-w-[92vw] text-center leading-snug">
+          <span className="w-2 h-2 rounded-full bg-primary animate-pulse shrink-0" />
+          <span className="break-words">{portfolioContent.hero.role}</span>
         </div>
 
         {/* Giant Hero Title with Word-level Wrapping to prevent broken words on mobile */}
         <h1
           ref={titleRef}
-          className="font-syne text-[2.5rem] xs:text-[3.25rem] sm:text-6xl md:text-7xl lg:text-9xl tracking-tighter font-extrabold uppercase text-transparent bg-clip-text bg-gradient-to-b from-white via-white/95 to-white/75 max-w-6xl leading-[0.94] flex flex-wrap justify-center overflow-hidden py-1 sm:py-2 drop-shadow-[0_4px_30px_rgba(0,0,0,0.95)]"
+          translate="no"
+          className="notranslate font-syne text-[2.25rem] xs:text-[3rem] sm:text-6xl md:text-7xl lg:text-9xl tracking-tighter font-extrabold uppercase text-on-surface max-w-6xl leading-[0.94] flex flex-wrap justify-center overflow-hidden py-1 sm:py-2 drop-shadow-2xl"
         >
           {titleWords.map((word, wordIndex) => (
             <span
               key={wordIndex}
-              className="inline-flex whitespace-nowrap mx-1.5 sm:mx-2.5 lg:mx-4"
+              className="inline-flex whitespace-nowrap mx-2 sm:mx-3 lg:mx-4"
             >
               {word.split("").map((char, charIndex) => (
                 <span
@@ -312,25 +282,25 @@ export default function HeroSection() {
         </h1>
 
         {/* Subtitle Description with subtle glass backdrop for crisp readability */}
-        <p className="mt-4 sm:mt-6 max-w-xl sm:max-w-2xl font-inter text-sm sm:text-base lg:text-lg text-on-surface font-normal leading-relaxed drop-shadow-[0_2px_14px_rgba(0,0,0,0.98)] px-3 sm:px-4 py-1 rounded-xl">
+        <p className="mt-4 sm:mt-6 max-w-xl sm:max-w-2xl font-inter text-sm sm:text-base lg:text-lg text-on-surface font-normal leading-relaxed drop-shadow-lg px-4 py-2 rounded-xl break-words">
           {portfolioContent.hero.description}
         </p>
 
         {/* Action Buttons */}
-        <div className="mt-6 sm:mt-8 flex flex-wrap items-center justify-center gap-2.5 sm:gap-3 w-full max-w-md sm:max-w-none">
+        <div className="mt-6 sm:mt-8 flex flex-wrap items-center justify-center gap-2 sm:gap-4 w-full max-w-md sm:max-w-none">
           <a
             href="#proyectos"
-            className="interactive inline-flex items-center justify-center gap-2 px-5 sm:px-6 py-2.5 sm:py-3 rounded-full bg-primary-container hover:bg-tertiary-container text-on-primary-container font-syne text-xs sm:text-sm font-semibold transition-all duration-300 shadow-[0_0_24px_-4px_rgba(77,142,255,0.5)] hover:shadow-[0_0_32px_-2px_rgba(77,142,255,0.7)] hover:-translate-y-0.5 min-h-[44px]"
+            className="interactive inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full bg-primary-container hover:bg-tertiary-container text-on-primary-container font-syne text-xs sm:text-sm font-semibold transition-all duration-300 motion-reduce:transition-none shadow-lg hover:-translate-y-0.5 min-h-[44px]"
           >
             <span>{portfolioContent.hero.ctaProjects}</span>
-            <ArrowDown className="w-4 h-4" />
+            <ArrowDown className="w-4 h-4 shrink-0" />
           </a>
 
           <a
             href="#contacto"
-            className="interactive inline-flex items-center justify-center gap-2 px-5 sm:px-6 py-2.5 sm:py-3 rounded-full bg-surface-container-high/90 hover:bg-surface-container-highest text-on-surface font-syne text-xs sm:text-sm font-semibold border border-outline-variant/60 transition-all duration-300 backdrop-blur-md hover:-translate-y-0.5 shadow-lg min-h-[44px]"
+            className="interactive inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full bg-surface-container-high/90 hover:bg-surface-container-highest text-on-surface font-syne text-xs sm:text-sm font-semibold border border-outline-variant/60 transition-all duration-300 motion-reduce:transition-none backdrop-blur-md hover:-translate-y-0.5 shadow-lg min-h-[44px]"
           >
-            <FileText className="w-4 h-4 text-outline" />
+            <FileText className="w-4 h-4 text-outline shrink-0" />
             <span>{portfolioContent.hero.ctaCv}</span>
           </a>
 
@@ -338,9 +308,10 @@ export default function HeroSection() {
             href={portfolioContent.personal.linkedin}
             target="_blank"
             rel="noreferrer"
-            className="interactive inline-flex items-center justify-center gap-2 px-4 sm:px-5 py-2.5 sm:py-3 rounded-full bg-surface-container/70 hover:bg-surface-container-high text-on-surface font-syne text-xs sm:text-sm font-medium border border-outline-variant/40 transition-all duration-300 backdrop-blur-md shadow-md min-h-[44px]"
+            translate="no"
+            className="notranslate interactive inline-flex items-center justify-center gap-2 px-4 sm:px-6 py-3 rounded-full bg-surface-container/70 hover:bg-surface-container-high text-on-surface font-syne text-xs sm:text-sm font-medium border border-outline-variant/40 transition-all duration-300 motion-reduce:transition-none backdrop-blur-md shadow-md min-h-[44px]"
           >
-            <ExternalLink className="w-4 h-4 text-outline" />
+            <ExternalLink className="w-4 h-4 text-outline shrink-0" />
             <span>{portfolioContent.hero.ctaLinkedIn}</span>
           </a>
         </div>
@@ -350,14 +321,14 @@ export default function HeroSection() {
       <a
         href="#sobre-mi"
         onClick={handleScrollToDetails}
-        className="interactive relative z-10 flex flex-col items-center gap-1.5 sm:gap-2 text-outline hover:text-primary font-mono text-[10px] tracking-widest uppercase transition-colors group cursor-pointer"
+        className="interactive relative z-10 flex flex-col items-center gap-2 text-outline hover:text-primary font-mono text-[10px] tracking-widest uppercase transition-colors group cursor-pointer text-center px-2"
         aria-label="Ver detalles y desplazarse al perfil"
       >
         <span className="text-[9px] text-outline/80 group-hover:text-primary transition-colors">
           {portfolioContent.hero.scrollIndicator}
         </span>
-        <div className="w-5 h-9 rounded-full border border-outline-variant/60 group-hover:border-primary/60 flex items-start justify-center p-1 transition-colors">
-          <div className="w-1.5 h-2.5 rounded-full bg-primary animate-bounce" />
+        <div className="w-6 h-10 rounded-full border border-outline-variant/60 group-hover:border-primary/60 flex items-start justify-center p-1 transition-colors">
+          <div className="w-2 h-2.5 rounded-full bg-primary animate-bounce" />
         </div>
       </a>
     </section>

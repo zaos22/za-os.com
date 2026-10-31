@@ -94,7 +94,10 @@ export default function Preloader() {
         </div>
 
         {/* Name and Role */}
-        <h2 className="font-syne text-base sm:text-lg font-bold text-on-surface tracking-wider uppercase mb-1">
+        <h2
+          translate="no"
+          className="notranslate font-syne text-base sm:text-lg font-bold text-on-surface tracking-wider uppercase mb-1"
+        >
           {portfolioContent.personal.name}
         </h2>
         <p className="font-mono text-[10px] sm:text-xs text-on-surface-variant max-w-xs mb-5">

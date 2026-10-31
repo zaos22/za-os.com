@@ -69,19 +69,17 @@ export default function AboutSection() {
       );
     }
 
-    // Word-by-word lighting scrub
-    const words = textRef.current?.querySelectorAll(".scrub-word");
-    if (words && words.length > 0 && sectionRef.current) {
+    // Bio lighting scrub
+    if (textRef.current && sectionRef.current) {
       gsap.fromTo(
-        words,
+        textRef.current,
         {
-          opacity: 0.25,
+          opacity: 0.35,
           color: "var(--color-outline)",
         },
         {
           opacity: 1,
           color: "var(--color-on-surface)",
-          stagger: 0.04,
           ease: "none",
           scrollTrigger: {
             trigger: sectionRef.current,
@@ -94,15 +92,13 @@ export default function AboutSection() {
     }
   }, []);
 
-  const bioWords = portfolioContent.about.bio.split(" ");
-
   return (
     <section
       ref={sectionRef}
       id="sobre-mi"
       className="relative z-10 w-full max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-12 py-12 sm:py-20"
     >
-      <div className="relative rounded-3xl bg-surface-container-lowest/80 border border-outline-variant/30 backdrop-blur-xl p-5 sm:p-10 lg:p-14 overflow-hidden shadow-2xl">
+      <div className="relative rounded-3xl bg-surface-container-lowest/80 border border-outline-variant/30 backdrop-blur-xl p-6 sm:p-10 lg:p-14 overflow-hidden shadow-2xl">
         {/* Ambient Corner Glow */}
         <div
           className="pointer-events-none absolute -top-24 -right-24 w-80 h-80 bg-primary/10 rounded-full blur-[90px]"
@@ -115,11 +111,11 @@ export default function AboutSection() {
             <div ref={photoRef} className="relative group will-change-transform">
               {/* Radiant Halo Ring */}
               <div
-                className="absolute -inset-2.5 rounded-full bg-gradient-to-tr from-primary/40 via-secondary-container/40 to-accent-main/30 blur-xl opacity-90 transition-opacity duration-500 group-hover:opacity-100"
+                className="absolute -inset-2 rounded-full bg-gradient-to-tr from-primary/40 via-secondary-container/40 to-accent-main/30 blur-xl opacity-90 transition-opacity duration-500 motion-reduce:transition-none group-hover:opacity-100"
                 aria-hidden="true"
               />
 
-              <div className="relative w-36 h-36 xs:w-44 xs:h-44 sm:w-56 sm:h-56 rounded-full p-1 bg-surface-container border border-primary/50 shadow-[0_0_32px_rgba(77,142,255,0.35)] overflow-hidden">
+              <div className="relative w-36 h-36 xs:w-44 xs:h-44 sm:w-56 sm:h-56 rounded-full p-1 bg-surface-container border border-primary/50 shadow-xl overflow-hidden">
                 <Image
                   src={portfolioContent.personal.profileImage}
                   alt={portfolioContent.about.heading}
@@ -133,75 +129,77 @@ export default function AboutSection() {
           </div>
 
           {/* Factual Information & Quick Channels */}
-          <div className="lg:col-span-8 flex flex-col justify-center space-y-4 sm:space-y-6">
+          <div className="lg:col-span-8 flex flex-col justify-center space-y-4 sm:space-y-6 min-w-0">
             <div className="inline-flex items-center gap-2 font-mono text-xs text-primary uppercase tracking-widest">
-              <span className="w-2 h-2 rounded-full bg-primary" />
-              <span>{portfolioContent.about.badge}</span>
+              <span className="w-2 h-2 rounded-full bg-primary shrink-0" />
+              <span className="break-words">{portfolioContent.about.badge}</span>
             </div>
 
-            <h2 className="font-syne text-2xl sm:text-4xl font-bold tracking-tight text-on-surface">
+            <h2
+              translate="no"
+              className="notranslate font-syne text-2xl sm:text-4xl font-bold tracking-tight text-on-surface"
+            >
               {portfolioContent.about.heading}
             </h2>
 
-            {/* Word-by-word lighted bio */}
+            {/* Illuminated bio */}
             <p
               ref={textRef}
-              className="font-inter text-base sm:text-xl leading-relaxed text-on-surface-variant"
+              className="font-inter text-base sm:text-xl leading-relaxed text-on-surface-variant break-words"
             >
-              {bioWords.map((word, index) => (
-                <span key={index} className="scrub-word inline-block mr-1.5 transition-colors">
-                  {word}
-                </span>
-              ))}
+              {portfolioContent.about.bio}
             </p>
 
             {/* Official Channels Details Box */}
-            <div className="rounded-xl bg-surface-container-lowest border border-outline-variant/40 p-4 sm:p-5 font-mono text-xs space-y-3">
-              <div className="flex items-center justify-between text-outline text-[11px] pb-2 border-b border-outline-variant/20 tracking-wider uppercase">
+            <div className="rounded-xl bg-surface-container-lowest border border-outline-variant/40 p-4 sm:p-6 font-mono text-xs space-y-4">
+              <div className="flex items-center justify-between text-outline text-[11px] pb-2 border-b border-outline-variant/20 tracking-wider uppercase break-words">
                 <span>{portfolioContent.about.directChannelsLabel}</span>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-1">
-                <div>
-                  <span className="text-outline block text-[10px] mb-1">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-1">
+                <div className="min-w-0">
+                  <span className="text-outline block text-[10px] mb-1 break-words">
                     {portfolioContent.about.emailLabel}
                   </span>
                   <a
                     href={`mailto:${portfolioContent.personal.email}`}
-                    className="interactive text-on-surface hover:text-primary transition-colors flex items-center gap-1.5 truncate"
+                    translate="no"
+                    className="notranslate interactive text-on-surface hover:text-primary transition-colors flex items-center gap-2 truncate"
                   >
-                    <Mail className="w-3.5 h-3.5 text-primary shrink-0" />
+                    <Mail className="w-4 h-4 text-primary shrink-0" />
                     <span className="truncate">{portfolioContent.personal.email}</span>
                   </a>
                 </div>
 
-                <div>
-                  <span className="text-outline block text-[10px] mb-1">
+                <div className="min-w-0">
+                  <span className="text-outline block text-[10px] mb-1 break-words">
                     {portfolioContent.about.linkedinLabel}
                   </span>
                   <a
                     href={portfolioContent.personal.linkedin}
                     target="_blank"
                     rel="noreferrer"
-                    className="interactive text-on-surface hover:text-primary transition-colors flex items-center gap-1.5"
+                    translate="no"
+                    className="notranslate interactive text-on-surface hover:text-primary transition-colors flex items-center gap-2"
                   >
-                    <LinkedinIcon className="w-3.5 h-3.5 text-primary shrink-0" />
-                    <span>in/zaos</span>
+                    <LinkedinIcon className="w-4 h-4 text-primary shrink-0" />
+                    <span className="truncate">in/zaos</span>
                   </a>
                 </div>
 
-                <div>
-                  <span className="text-outline block text-[10px] mb-1">
+                <div className="min-w-0">
+                  <span className="text-outline block text-[10px] mb-1 break-words">
                     {portfolioContent.about.githubLabel}
                   </span>
                   <a
                     href={portfolioContent.personal.github}
                     target="_blank"
                     rel="noreferrer"
-                    className="interactive text-on-surface hover:text-primary transition-colors flex items-center gap-1.5"
+                    translate="no"
+                    className="notranslate interactive text-on-surface hover:text-primary transition-colors flex items-center gap-2"
                   >
-                    <GithubIcon className="w-3.5 h-3.5 text-primary shrink-0" />
-                    <span>zaos22</span>
+                    <GithubIcon className="w-4 h-4 text-primary shrink-0" />
+                    <span className="truncate">zaos22</span>
                   </a>
                 </div>
               </div>

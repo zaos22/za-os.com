@@ -103,7 +103,10 @@ export default function SkillsSection() {
       </div>
 
       {/* Infinite Horizontal Marquee */}
-      <div className="relative w-full overflow-hidden rounded-xl bg-surface-container-lowest/60 border border-outline-variant/30 py-3 mb-6 sm:mb-10 select-none">
+      <div
+        dir="ltr"
+        className="relative w-full overflow-hidden rounded-xl bg-surface-container-lowest/60 border border-outline-variant/30 py-4 mb-6 sm:mb-10 select-none"
+      >
         <div className="animate-marquee gap-8 font-mono text-xs text-on-surface-variant uppercase tracking-widest">
           {/* Double array for continuous seamless loop */}
           {[...portfolioContent.skills.marqueeAreas, ...portfolioContent.skills.marqueeAreas].map(
@@ -129,22 +132,22 @@ export default function SkillsSection() {
           return (
             <div
               key={module.id}
-              className="bento-skill-card bento-glow-card group relative rounded-2xl bg-surface-container-lowest/80 border border-outline-variant/30 p-5 sm:p-7 hover:border-primary/50 transition-all duration-300 hover:shadow-[0_0_24px_-4px_rgba(77,142,255,0.2)] flex flex-col justify-between"
+              className="bento-skill-card bento-glow-card group relative rounded-2xl bg-surface-container-lowest/80 border border-outline-variant/30 p-6 sm:p-8 hover:border-primary/50 transition-all duration-300 motion-reduce:transition-none hover:shadow-xl flex flex-col justify-between min-w-0"
             >
               <div>
-                <div className="flex items-center justify-between mb-4">
-                  <div className="w-10 h-10 rounded-xl bg-surface-container flex items-center justify-center border border-outline-variant/40 group-hover:border-primary/40 transition-colors">
+                <div className="flex items-center justify-between gap-2 mb-4">
+                  <div className="w-10 h-10 rounded-xl bg-surface-container flex items-center justify-center border border-outline-variant/40 group-hover:border-primary/40 transition-colors shrink-0">
                     <IconComponent className="w-5 h-5 text-primary" />
                   </div>
-                  <span className="font-mono text-[11px] text-outline uppercase tracking-wider">
+                  <span className="font-mono text-[11px] text-outline uppercase tracking-wider text-right">
                     {module.moduleNumber}
                   </span>
                 </div>
 
-                <h3 className="font-syne text-lg font-bold text-on-surface mb-2">
+                <h3 className="font-syne text-lg font-bold text-on-surface mb-2 break-words">
                   {module.name}
                 </h3>
-                <p className="font-inter text-sm text-on-surface-variant leading-relaxed mb-4">
+                <p className="font-inter text-sm text-on-surface-variant leading-relaxed mb-4 break-words">
                   {module.description}
                 </p>
               </div>

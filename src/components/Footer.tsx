@@ -16,10 +16,13 @@ export default function Footer() {
       <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-12 py-12 flex flex-col md:flex-row items-center justify-between gap-6">
         {/* Brand & Role */}
         <div className="flex flex-col items-center md:items-start gap-1 text-center md:text-left">
-          <span className="font-syne text-base font-bold text-on-surface tracking-tight">
+          <span
+            translate="no"
+            className="notranslate font-syne text-base font-bold text-on-surface tracking-tight"
+          >
             {footer.title}
           </span>
-          <p className="font-mono text-xs text-outline text-center md:text-left max-w-sm sm:max-w-none leading-relaxed">
+          <p className="font-mono text-xs text-outline text-center md:text-left max-w-sm sm:max-w-none leading-relaxed break-words">
             {footer.role}
           </p>
         </div>
@@ -28,7 +31,8 @@ export default function Footer() {
         <div className="flex flex-wrap items-center justify-center gap-6 font-mono text-xs text-on-surface-variant">
           <a
             href={`mailto:${personal.email}`}
-            className="interactive hover:text-primary transition-colors"
+            translate="no"
+            className="notranslate interactive hover:text-primary transition-colors"
           >
             {personal.email}
           </a>
@@ -36,7 +40,8 @@ export default function Footer() {
             href={personal.linkedin}
             target="_blank"
             rel="noreferrer"
-            className="interactive hover:text-primary transition-colors"
+            translate="no"
+            className="notranslate interactive hover:text-primary transition-colors"
           >
             LinkedIn
           </a>
@@ -44,7 +49,8 @@ export default function Footer() {
             href={personal.github}
             target="_blank"
             rel="noreferrer"
-            className="interactive hover:text-primary transition-colors"
+            translate="no"
+            className="notranslate interactive hover:text-primary transition-colors"
           >
             GitHub
           </a>
@@ -54,12 +60,15 @@ export default function Footer() {
             className="interactive flex items-center gap-1 hover:text-on-surface transition-colors cursor-pointer"
           >
             <span>{footer.backToTop}</span>
-            <ArrowUp className="w-3.5 h-3.5" />
+            <ArrowUp className="w-3.5 h-3.5 shrink-0" />
           </button>
         </div>
 
         {/* Copyright */}
-        <div className="font-mono text-xs text-outline text-center md:text-right">
+        <div
+          translate="no"
+          className="notranslate font-mono text-xs text-outline text-center md:text-right"
+        >
           {footer.copyright}
         </div>
       </div>

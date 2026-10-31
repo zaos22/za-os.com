@@ -129,34 +129,41 @@ export default function AnalyticsSection() {
                 </div>
               </div>
 
-              <div>
-                <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-surface-container-highest border border-outline-variant/40 font-mono text-[10px] text-primary uppercase tracking-wider">
-                  <span className="w-1.5 h-1.5 rounded-full bg-primary" />
-                  <span>{analyticsData.badge}</span>
+              <div className="min-w-0">
+                <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-surface-container-highest border border-outline-variant/40 font-mono text-[10px] text-primary uppercase tracking-wider">
+                  <span className="w-1.5 h-1.5 rounded-full bg-primary shrink-0" />
+                  <span className="break-words">{analyticsData.badge}</span>
                 </span>
-                <h3 className="font-syne text-base sm:text-xl font-bold text-on-surface mt-1 sm:mt-1.5">
+                <h3
+                  translate="no"
+                  className="notranslate font-syne text-base sm:text-xl font-bold text-on-surface mt-2 break-words"
+                >
                   {analyticsData.title}
                 </h3>
-                <p className="font-mono text-xs text-outline">{analyticsData.issuer}</p>
+                <p translate="no" className="notranslate font-mono text-xs text-outline">
+                  {analyticsData.issuer}
+                </p>
               </div>
             </div>
 
             {/* Official Certification Metadata */}
-            <div className="rounded-xl bg-surface-container-lowest/90 border border-outline-variant/30 p-3.5 sm:p-4 font-mono text-xs space-y-2.5 mb-5 sm:mb-6">
-              <div className="flex items-center justify-between">
+            <div className="rounded-xl bg-surface-container-lowest/90 border border-outline-variant/30 p-4 font-mono text-xs space-y-2 mb-6">
+              <div className="flex flex-wrap items-center justify-between gap-2">
                 <span className="text-outline">Emitido:</span>
                 <span className="text-on-surface font-medium">{analyticsData.issueDate}</span>
               </div>
               {analyticsData.expiryDate && (
-                <div className="flex items-center justify-between">
+                <div className="flex flex-wrap items-center justify-between gap-2">
                   <span className="text-outline">Válido hasta:</span>
                   <span className="text-on-surface font-medium">{analyticsData.expiryDate}</span>
                 </div>
               )}
               {analyticsData.certId && (
-                <div className="flex items-center justify-between pt-1.5 border-t border-outline-variant/20">
+                <div className="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-outline-variant/20">
                   <span className="text-outline">ID de certificado:</span>
-                  <span className="text-primary font-bold text-[11px] sm:text-xs truncate ml-2">{analyticsData.certId}</span>
+                  <span className="text-primary font-bold text-[11px] sm:text-xs truncate">
+                    {analyticsData.certId}
+                  </span>
                 </div>
               )}
             </div>

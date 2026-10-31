@@ -30,7 +30,10 @@ function ProjectCard({ project, index }: { project: ProjectItem; index: number }
             <span className="w-2 sm:w-2.5 h-2 sm:h-2.5 rounded-full bg-[#34A853]/70" />
           </div>
 
-          <div className="flex items-center gap-1.5 px-2.5 sm:px-3 py-0.5 sm:py-1 rounded-md bg-surface-container-lowest border border-outline-variant/30 font-mono text-[11px] sm:text-xs text-outline max-w-[180px] xs:max-w-[220px] sm:max-w-xs truncate">
+          <div
+            translate="no"
+            className="notranslate flex items-center gap-2 px-3 py-1 rounded-md bg-surface-container-lowest border border-outline-variant/30 font-mono text-[11px] sm:text-xs text-outline max-w-[180px] xs:max-w-[220px] sm:max-w-xs truncate"
+          >
             <Lock className="w-3 h-3 text-primary shrink-0" />
             <span className="truncate">{project.displayUrl}</span>
           </div>
@@ -47,17 +50,20 @@ function ProjectCard({ project, index }: { project: ProjectItem; index: number }
               loading="lazy"
               sandbox="allow-scripts allow-same-origin"
               onError={() => setIframeError(true)}
-              className="w-full h-full border-0 pointer-events-none opacity-90 transition-opacity duration-300 hover:opacity-100"
+              className="w-full h-full border-0 pointer-events-none opacity-90 transition-opacity duration-300 motion-reduce:transition-none hover:opacity-100"
             />
           ) : (
-            <div className="flex flex-col items-center justify-center p-5 sm:p-6 text-center space-y-2.5 sm:space-y-3">
+            <div className="flex flex-col items-center justify-center p-6 text-center space-y-3">
               <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-2xl bg-surface-container flex items-center justify-center border border-outline-variant/40 shadow-inner">
                 <IconComponent className="w-6 h-6 sm:w-8 sm:h-8 text-primary" />
               </div>
-              <span className="font-syne text-base sm:text-lg font-bold text-on-surface">
+              <span
+                translate="no"
+                className="notranslate font-syne text-base sm:text-lg font-bold text-on-surface"
+              >
                 {project.title}
               </span>
-              <span className="font-mono text-[11px] sm:text-xs text-outline max-w-xs">
+              <span className="font-mono text-[11px] sm:text-xs text-outline max-w-xs break-words">
                 {project.isPlaceholder
                   ? "Despliegue privado en preparación"
                   : "Previsualización interactiva disponible en enlace directo"}
@@ -67,17 +73,21 @@ function ProjectCard({ project, index }: { project: ProjectItem; index: number }
         </div>
 
         {/* Card Body */}
-        <div className="p-5 sm:p-8">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 sm:gap-4 mb-2.5 sm:mb-2">
-            <h3 className="font-syne text-xl sm:text-2xl font-bold text-on-surface">
+        <div className="p-6 sm:p-8">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 sm:gap-4 mb-2">
+            <h3
+              translate="no"
+              className="notranslate font-syne text-xl sm:text-2xl font-bold text-on-surface break-words"
+            >
               {project.title}
             </h3>
             {project.tags.length > 0 && (
-              <div className="flex flex-wrap gap-1.5">
+              <div className="flex flex-wrap gap-2">
                 {project.tags.map((tag, idx) => (
                   <span
                     key={idx}
-                    className="px-2.5 py-0.5 rounded-full bg-primary/10 border border-primary/30 font-mono text-[11px] sm:text-xs text-primary font-medium"
+                    translate="no"
+                    className="notranslate px-2.5 py-0.5 rounded-full bg-primary/10 border border-primary/30 font-mono text-[11px] sm:text-xs text-primary font-medium"
                   >
                     {tag}
                   </span>
@@ -86,7 +96,7 @@ function ProjectCard({ project, index }: { project: ProjectItem; index: number }
             )}
           </div>
 
-          <p className="font-inter text-sm sm:text-base text-on-surface-variant mb-4 sm:mb-6 leading-relaxed">
+          <p className="font-inter text-sm sm:text-base text-on-surface-variant mb-4 sm:mb-6 leading-relaxed break-words">
             {project.description}
           </p>
         </div>

@@ -54,10 +54,10 @@ export default function Header() {
       }`}
     >
       <div
-        className={`h-14 sm:h-16 w-full max-w-[1280px] mx-auto px-4 sm:px-6 flex items-center justify-between border rounded-full transition-all duration-300 ease-out motion-reduce:transition-none ${
+        className={`relative z-50 h-14 sm:h-16 w-full max-w-[1280px] mx-auto px-4 sm:px-6 flex items-center justify-between border rounded-full transition-all duration-300 ease-out motion-reduce:transition-none ${
           isAtTop && !mobileMenuOpen
-            ? "opacity-20 hover:opacity-100 focus-within:opacity-100 bg-surface-container-lowest/35 hover:bg-surface-container-lowest/85 focus-within:bg-surface-container-lowest/85 backdrop-blur-md hover:backdrop-blur-xl border-outline-variant/15 hover:border-outline-variant/40 shadow-sm hover:shadow-lg"
-            : "opacity-100 bg-surface-container-lowest/85 backdrop-blur-xl border-outline-variant/30 shadow-lg"
+            ? "opacity-95 bg-surface-container-lowest/90 backdrop-blur-xl border-outline-variant/35 shadow-md lg:landscape:opacity-20 lg:landscape:hover:opacity-100 lg:landscape:focus-within:opacity-100 lg:landscape:bg-surface-container-lowest/35 lg:landscape:hover:bg-surface-container-lowest/85 lg:landscape:focus-within:bg-surface-container-lowest/85 lg:landscape:backdrop-blur-md lg:landscape:hover:backdrop-blur-xl lg:landscape:border-outline-variant/15 lg:landscape:hover:border-outline-variant/40 lg:landscape:shadow-sm lg:landscape:hover:shadow-lg"
+            : "opacity-100 bg-surface-container-lowest/95 lg:landscape:bg-surface-container-lowest/85 backdrop-blur-xl border-outline-variant/40 lg:landscape:border-outline-variant/30 shadow-lg"
         }`}
       >
         {/* Brand / Logo with Profile Photo */}
@@ -140,11 +140,25 @@ export default function Header() {
         <>
           <div
             onClick={() => setMobileMenuOpen(false)}
-            className="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm md:hidden animate-fade-in"
+            className="fixed inset-0 z-40 bg-surface-container-lowest/75 backdrop-blur-sm md:hidden animate-fade-in motion-reduce:animate-none"
             aria-hidden="true"
           />
-          <div className="fixed inset-x-3 top-18 z-50 md:hidden bg-surface-container-lowest/95 backdrop-blur-2xl border border-outline-variant/50 rounded-2xl p-6 shadow-2xl transition-all duration-300">
-            <nav className="flex flex-col gap-3" aria-label="Menú móvil">
+          <div className="fixed inset-x-4 top-20 z-50 md:hidden bg-surface-container-lowest/95 backdrop-blur-2xl border border-outline-variant/50 rounded-2xl p-6 shadow-2xl transition-all duration-300 motion-reduce:transition-none">
+            <div className="flex items-center justify-between pb-4 mb-2 border-b border-outline-variant/30">
+              <span className="font-mono text-xs uppercase tracking-widest text-on-surface-variant">
+                Navegación
+              </span>
+              <button
+                type="button"
+                onClick={() => setMobileMenuOpen(false)}
+                className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-surface-container-high border border-outline-variant/40 text-on-surface hover:text-primary transition-colors motion-reduce:transition-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+                aria-label="Cerrar menú de navegación"
+              >
+                <span className="font-syne text-xs font-semibold">Cerrar</span>
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+            <nav className="flex flex-col gap-2" aria-label="Menú móvil">
               {portfolioContent.nav.links.map((link) => (
                 <a
                   key={link.href}

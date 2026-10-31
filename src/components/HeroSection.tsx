@@ -1,9 +1,9 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 import Image from "next/image";
 import { portfolioContent } from "@/data/content";
-import { ArrowDown, FileText, ExternalLink } from "lucide-react";
+import { ArrowDown, FileText, ExternalLink, Eye, EyeOff } from "lucide-react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
@@ -13,6 +13,72 @@ export default function HeroSection() {
   const containerRef = useRef<HTMLDivElement>(null);
   const bgImageRef = useRef<HTMLDivElement>(null);
 
+  // Reactive state for toggle & user feedback
+  const [isRevealed, setIsRevealed] = useState(false);
+  const revealState = useRef({ hover: 0, scroll: 0, manual: 0 });
+  const idleTimerRef = useRef<NodeJS.Timeout | null>(null);
+
+  // Helper to re-render visual styles on container and background
+  const updateVisuals = useCallback(() => {
+    if (!containerRef.current) return;
+    const h = revealState.current.hover;
+    const s = revealState.current.scroll;
+    const m = revealState.current.manual;
+
+    const prefersReducedMotion =
+      typeof window !== "undefined" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    // Scroll scrub curve:
+    // 0.00 -> 0.32: ramps from faint (0.16) to 100% full visibility
+    // 0.32 -> 0.62: maintains 100% visibility (current state)
+    // 0.62 -> 1.00: exit transition into About section
+    let scrollOpacity = 0.16;
+    let textScale = 1;
+    let blur = 0;
+
+    if (s < 0.32) {
+      scrollOpacity = 0.16 + (s / 0.32) * 0.84;
+      textScale = prefersReducedMotion ? 1 : 1 + s * 0.08;
+    } else if (s <= 0.62) {
+      scrollOpacity = 1.0;
+      textScale = prefersReducedMotion ? 1 : 1.025;
+    } else {
+      const exitProgress = (s - 0.62) / 0.38;
+      scrollOpacity = Math.max(0, 1 - exitProgress * 1.05);
+      textScale = prefersReducedMotion
+        ? 1
+        : 1.025 + exitProgress * (window.innerWidth < 768 ? 0.35 : 0.65);
+      blur = prefersReducedMotion ? 0 : exitProgress * 5;
+    }
+
+    // Interactivity: mouse hover or manual toggle boosts visibility up to 1.0
+    const interactiveBoost = Math.max(h, m);
+    const effectiveOpacity =
+      s > 0.62
+        ? scrollOpacity
+        : Math.min(1, Math.max(scrollOpacity, 0.16 + interactiveBoost * 0.84));
+
+    gsap.set(containerRef.current, {
+      opacity: effectiveOpacity,
+      scale: textScale,
+      filter: blur > 0.1 ? `blur(${blur}px)` : "none",
+      transformOrigin: "center center",
+    });
+
+    if (bgImageRef.current) {
+      const bgScale = prefersReducedMotion ? 1 : 1 + s * 0.18;
+      const bgOpacity = 1 - s * 0.65;
+      const bgBlur = prefersReducedMotion ? 0 : s * 5;
+      gsap.set(bgImageRef.current, {
+        scale: bgScale,
+        opacity: bgOpacity,
+        filter: bgBlur > 0.2 ? `blur(${bgBlur}px)` : "none",
+        transformOrigin: "center 30%",
+      });
+    }
+  }, []);
+
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
 
@@ -20,7 +86,7 @@ export default function HeroSection() {
       "(prefers-reduced-motion: reduce)"
     ).matches;
 
-    // Split title into letters for mask reveal
+    // Split title into letters for entrance reveal
     const letters = titleRef.current?.querySelectorAll(".hero-letter");
     if (letters && letters.length > 0) {
       if (prefersReducedMotion) {
@@ -29,13 +95,13 @@ export default function HeroSection() {
         gsap.fromTo(
           letters,
           {
-            y: 60,
+            y: 50,
             opacity: 0,
           },
           {
             y: 0,
             opacity: 1,
-            stagger: 0.035,
+            stagger: 0.03,
             duration: 0.8,
             ease: "power3.out",
             delay: 0.2,
@@ -47,7 +113,7 @@ export default function HeroSection() {
     // Full Hero Background Photo entrance
     if (bgImageRef.current) {
       if (prefersReducedMotion) {
-        gsap.set(bgImageRef.current, { opacity: 1 });
+        gsap.set(bgImageRef.current, { opacity: 1, scale: 1 });
       } else {
         gsap.fromTo(
           bgImageRef.current,
@@ -65,54 +131,82 @@ export default function HeroSection() {
       }
     }
 
-    // Cinematic Parallax Camera Zoom on Scroll
-    if (!prefersReducedMotion && sectionRef.current && containerRef.current) {
-      const isMobile = window.innerWidth < 768;
+    // Set initial faint state on container
+    updateVisuals();
 
-      const trigger = ScrollTrigger.create({
+    // Cinematic Parallax Camera Zoom & Scroll Scrub
+    let trigger: ScrollTrigger | null = null;
+    if (sectionRef.current && containerRef.current) {
+      trigger = ScrollTrigger.create({
         trigger: sectionRef.current,
         start: "top top",
-        end: "+=65%",
+        end: "+=75%",
         pin: true,
-        scrub: 0.8,
+        scrub: prefersReducedMotion ? 0.3 : 0.6,
         onUpdate: (self) => {
-          const progress = self.progress;
-
-          // Parallax depth: Foreground typography zooms faster than background
-          const textScale = isMobile ? 1 + progress * 0.35 : 1 + progress * 0.65;
-          const bgScale = 1 + progress * 0.2;
-          const opacity = 1 - progress * 0.88;
-          const blur = progress * 4;
-
-          gsap.set(containerRef.current, {
-            scale: textScale,
-            opacity: opacity,
-            filter: `blur(${blur}px)`,
-            transformOrigin: "center center",
-          });
-
-          if (bgImageRef.current) {
-            gsap.set(bgImageRef.current, {
-              scale: bgScale,
-              opacity: 1 - progress * 0.7,
-              filter: `blur(${progress * 6}px)`,
-              transformOrigin: "center 35%",
-            });
-          }
+          revealState.current.scroll = self.progress;
+          updateVisuals();
         },
       });
-
-      return () => {
-        trigger.kill();
-      };
     }
-  }, []);
+
+    return () => {
+      if (trigger) trigger.kill();
+    };
+  }, [updateVisuals]);
+
+  // Reactive mouse interaction handlers: stay illuminated while hovering hero
+  const handleMouseEnter = () => {
+    gsap.to(revealState.current, {
+      hover: 1,
+      duration: 0.4,
+      ease: "power2.out",
+      onUpdate: updateVisuals,
+    });
+  };
+
+  const handleMouseMove = () => {
+    if (revealState.current.hover < 0.95) {
+      gsap.to(revealState.current, {
+        hover: 1,
+        duration: 0.3,
+        ease: "power2.out",
+        onUpdate: updateVisuals,
+      });
+    }
+  };
+
+  const handleMouseLeave = () => {
+    if (revealState.current.manual === 0) {
+      gsap.to(revealState.current, {
+        hover: 0,
+        duration: 0.7,
+        ease: "power2.out",
+        onUpdate: updateVisuals,
+      });
+    }
+  };
+
+  // Toggle manual focus
+  const toggleReveal = () => {
+    const next = !isRevealed;
+    setIsRevealed(next);
+    gsap.to(revealState.current, {
+      manual: next ? 1 : 0,
+      duration: 0.4,
+      ease: "power2.out",
+      onUpdate: updateVisuals,
+    });
+  };
 
   const titleText = portfolioContent.hero.title;
 
   return (
     <section
       ref={sectionRef}
+      onMouseEnter={handleMouseEnter}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
       className="relative min-h-[calc(100vh-4rem)] w-full flex flex-col justify-between items-center px-4 sm:px-6 lg:px-12 pt-20 pb-8 overflow-hidden select-none"
     >
       {/* 16:9 Full Hero Cinematic Photo Layer */}
@@ -127,21 +221,45 @@ export default function HeroSection() {
           fill
           priority
           sizes="100vw"
-          className="object-cover object-[center_35%] sm:object-[center_28%] lg:object-center filter contrast-[1.08] brightness-[0.72] sm:brightness-[0.78]"
+          className="object-cover object-[center_28%] sm:object-[center_22%] lg:object-center filter contrast-[1.04] brightness-[0.92] sm:brightness-[0.96]"
         />
-        {/* Gradient Scrims: Obsidian surface blend & AAA Text Contrast */}
-        <div className="absolute inset-0 bg-gradient-to-b from-surface/90 via-surface/30 to-surface" />
-        <div className="absolute inset-0 bg-gradient-to-r from-surface/80 via-transparent to-surface/80" />
-        <div className="absolute inset-0 bg-primary/10 mix-blend-color-dodge blur-[90px]" />
+
+        {/* Subtle, non-intrusive edge blends preserving Oussama's portrait */}
+        <div className="absolute top-0 inset-x-0 h-28 sm:h-36 bg-gradient-to-b from-surface/85 via-surface/35 to-transparent" />
+        <div className="absolute bottom-0 inset-x-0 h-36 sm:h-44 bg-gradient-to-t from-surface via-surface/65 to-transparent" />
+        <div className="absolute inset-0 bg-primary/[0.03] mix-blend-screen pointer-events-none" />
       </div>
 
-      {/* Foreground Hero Typography & Interactive Controls */}
+      {/* Floating Control: Quick Toggle to switch between clean photo & full details */}
+      <div className="relative z-20 w-full max-w-[1280px] mx-auto flex justify-end">
+        <button
+          onClick={toggleReveal}
+          type="button"
+          aria-label={isRevealed ? "Atenuar texto para ver foto" : "Mostrar texto completo"}
+          className="interactive inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-surface-container/70 hover:bg-surface-container-high/90 border border-outline-variant/40 text-on-surface-variant hover:text-on-surface text-[11px] font-mono tracking-wide backdrop-blur-md transition-all duration-300 shadow-md"
+        >
+          {isRevealed ? (
+            <>
+              <EyeOff className="w-3.5 h-3.5 text-primary" />
+              <span className="hidden sm:inline">Modo Foto Limpia</span>
+            </>
+          ) : (
+            <>
+              <Eye className="w-3.5 h-3.5 text-primary" />
+              <span className="hidden sm:inline">Ver Detalles</span>
+            </>
+          )}
+        </button>
+      </div>
+
+      {/* Foreground Hero Typography & Interactive Controls (Reactive Visibility) */}
       <div
         ref={containerRef}
-        className="relative z-10 w-full max-w-[1280px] mx-auto text-center flex flex-col items-center my-auto py-8 sm:py-12 will-change-transform"
+        style={{ opacity: 0.16 }}
+        className="relative z-10 w-full max-w-[1280px] mx-auto text-center flex flex-col items-center my-auto py-6 sm:py-10 will-change-transform"
       >
         {/* Role kicker badge */}
-        <div className="inline-flex items-center gap-2 mb-6 px-4 py-1.5 rounded-full bg-surface-container-high/80 border border-outline-variant/40 text-on-surface font-mono text-xs tracking-wider uppercase backdrop-blur-md shadow-lg">
+        <div className="inline-flex items-center gap-2 mb-6 px-4 py-1.5 rounded-full bg-surface-container-high/90 border border-outline-variant/50 text-on-surface font-mono text-xs tracking-wider uppercase backdrop-blur-md shadow-lg">
           <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
           <span>{portfolioContent.hero.role}</span>
         </div>
@@ -149,7 +267,7 @@ export default function HeroSection() {
         {/* Giant Hero Title with Letter Mask Animation */}
         <h1
           ref={titleRef}
-          className="font-syne text-5xl sm:text-7xl lg:text-9xl tracking-tighter font-extrabold uppercase text-transparent bg-clip-text bg-gradient-to-b from-white via-white/95 to-white/70 max-w-6xl leading-[0.92] flex flex-wrap justify-center overflow-hidden py-2 drop-shadow-[0_4px_30px_rgba(0,0,0,0.9)]"
+          className="font-syne text-5xl sm:text-7xl lg:text-9xl tracking-tighter font-extrabold uppercase text-transparent bg-clip-text bg-gradient-to-b from-white via-white/95 to-white/75 max-w-6xl leading-[0.92] flex flex-wrap justify-center overflow-hidden py-2 drop-shadow-[0_4px_30px_rgba(0,0,0,0.95)]"
         >
           {titleText.split("").map((char, index) => (
             <span
@@ -163,8 +281,8 @@ export default function HeroSection() {
           ))}
         </h1>
 
-        {/* Factual Subtitle Description */}
-        <p className="mt-6 max-w-2xl font-inter text-base sm:text-lg text-on-surface font-normal leading-relaxed drop-shadow-[0_2px_12px_rgba(0,0,0,0.95)]">
+        {/* Subtitle Description with subtle glass backdrop for crisp readability */}
+        <p className="mt-6 max-w-2xl font-inter text-base sm:text-lg text-on-surface font-normal leading-relaxed drop-shadow-[0_2px_14px_rgba(0,0,0,0.98)] px-4 py-1 rounded-xl">
           {portfolioContent.hero.description}
         </p>
 
@@ -198,9 +316,11 @@ export default function HeroSection() {
         </div>
       </div>
 
-      {/* Scroll Indicator */}
+      {/* Reactive Interaction Micro-Hint & Scroll Indicator */}
       <div className="relative z-10 flex flex-col items-center gap-2 text-outline font-mono text-[10px] tracking-widest uppercase">
-        <span>{portfolioContent.hero.scrollIndicator}</span>
+        <span className="text-[9px] text-outline/70 transition-opacity">
+          Mueve el cursor o haz scroll para desvelar
+        </span>
         <div className="w-5 h-9 rounded-full border border-outline-variant/60 flex items-start justify-center p-1">
           <div className="w-1.5 h-2.5 rounded-full bg-primary animate-bounce" />
         </div>

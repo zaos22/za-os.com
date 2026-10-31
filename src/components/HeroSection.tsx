@@ -13,37 +13,41 @@ export default function HeroSection() {
   const containerRef = useRef<HTMLDivElement>(null);
   const bgImageRef = useRef<HTMLDivElement>(null);
 
-  // Reactive state for toggle & user feedback
-  const [isRevealed, setIsRevealed] = useState(false);
-  const revealState = useRef({ hover: 0, scroll: 0, manual: 0 });
+  // Clean Photo toggle state & animation refs
+  const [isCleanPhoto, setIsCleanPhoto] = useState(false);
+  const stateRef = useRef({
+    hover: 0,
+    scroll: 0,
+    cleanPhoto: false,
+  });
 
   // Helper to re-render visual styles on container and background
   const updateVisuals = useCallback(() => {
     if (!containerRef.current) return;
-    const h = revealState.current.hover;
-    const s = revealState.current.scroll;
-    const m = revealState.current.manual;
+    const h = stateRef.current.hover;
+    const s = stateRef.current.scroll;
+    const isClean = stateRef.current.cleanPhoto;
 
     const prefersReducedMotion =
       typeof window !== "undefined" &&
       window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
     // Scroll scrub curve:
-    // 0.00 -> 0.32: ramps from faint (0.16) to 100% full visibility
-    // 0.32 -> 0.62: maintains 100% visibility (current state)
-    // 0.62 -> 1.00: exit transition into About section
-    let scrollOpacity = 0.16;
+    // 0.00 -> 0.35: ramps from faint (0.18) to 1.0 full visibility
+    // 0.35 -> 0.65: maintains 1.0 full visibility
+    // 0.65 -> 1.00: exit transition into About section
+    let scrollOpacity = 0.18;
     let textScale = 1;
     let blur = 0;
 
-    if (s < 0.32) {
-      scrollOpacity = 0.16 + (s / 0.32) * 0.84;
+    if (s < 0.35) {
+      scrollOpacity = 0.18 + (s / 0.35) * 0.82;
       textScale = prefersReducedMotion ? 1 : 1 + s * 0.08;
-    } else if (s <= 0.62) {
+    } else if (s <= 0.65) {
       scrollOpacity = 1.0;
       textScale = prefersReducedMotion ? 1 : 1.025;
     } else {
-      const exitProgress = (s - 0.62) / 0.38;
+      const exitProgress = (s - 0.65) / 0.35;
       scrollOpacity = Math.max(0, 1 - exitProgress * 1.05);
       textScale = prefersReducedMotion
         ? 1
@@ -51,18 +55,25 @@ export default function HeroSection() {
       blur = prefersReducedMotion ? 0 : exitProgress * 5;
     }
 
-    // Interactivity: mouse hover or manual toggle boosts visibility up to 1.0
-    const interactiveBoost = Math.max(h, m);
-    const effectiveOpacity =
-      s > 0.62
-        ? scrollOpacity
-        : Math.min(1, Math.max(scrollOpacity, 0.16 + interactiveBoost * 0.84));
+    // Effective opacity:
+    let effectiveOpacity: number;
+    if (isClean && s < 0.25) {
+      // In clean photo mode at top of page, hide text completely
+      effectiveOpacity = 0;
+    } else if (s > 0.65) {
+      effectiveOpacity = scrollOpacity;
+    } else {
+      // Direct hover over text container illuminates to 1.0, otherwise follow scroll scrub
+      const hoverBoost = h * (1.0 - scrollOpacity);
+      effectiveOpacity = Math.min(1, Math.max(0, scrollOpacity + hoverBoost));
+    }
 
     gsap.set(containerRef.current, {
       opacity: effectiveOpacity,
       scale: textScale,
       filter: blur > 0.1 ? `blur(${blur}px)` : "none",
       transformOrigin: "center center",
+      pointerEvents: effectiveOpacity < 0.08 ? "none" : "auto",
     });
 
     if (bgImageRef.current) {
@@ -143,7 +154,7 @@ export default function HeroSection() {
         pin: true,
         scrub: prefersReducedMotion ? 0.3 : 0.6,
         onUpdate: (self) => {
-          revealState.current.scroll = self.progress;
+          stateRef.current.scroll = self.progress;
           updateVisuals();
         },
       });
@@ -154,56 +165,53 @@ export default function HeroSection() {
     };
   }, [updateVisuals]);
 
-  // Reactive mouse interaction handlers: stay illuminated while hovering hero
-  const handleMouseEnter = () => {
-    gsap.to(revealState.current, {
+  // Reactive text hover: illuminates only when hovering over text
+  const handleTextMouseEnter = () => {
+    if (stateRef.current.cleanPhoto) return;
+    gsap.to(stateRef.current, {
       hover: 1,
-      duration: 0.4,
+      duration: 0.35,
       ease: "power2.out",
       onUpdate: updateVisuals,
     });
   };
 
-  const handleMouseMove = () => {
-    if (revealState.current.hover < 0.95) {
-      gsap.to(revealState.current, {
-        hover: 1,
-        duration: 0.3,
-        ease: "power2.out",
-        onUpdate: updateVisuals,
-      });
-    }
-  };
-
-  const handleMouseLeave = () => {
-    if (revealState.current.manual === 0) {
-      gsap.to(revealState.current, {
-        hover: 0,
-        duration: 0.7,
-        ease: "power2.out",
-        onUpdate: updateVisuals,
-      });
-    }
-  };
-
-  // Toggle manual focus
-  const toggleReveal = () => {
-    const next = !isRevealed;
-    setIsRevealed(next);
-    gsap.to(revealState.current, {
-      manual: next ? 1 : 0,
-      duration: 0.4,
+  const handleTextMouseLeave = () => {
+    gsap.to(stateRef.current, {
+      hover: 0,
+      duration: 0.5,
       ease: "power2.out",
       onUpdate: updateVisuals,
     });
+  };
+
+  // Toggle clean photo mode
+  const toggleCleanPhoto = () => {
+    const next = !isCleanPhoto;
+    setIsCleanPhoto(next);
+    stateRef.current.cleanPhoto = next;
+    stateRef.current.hover = 0;
+    updateVisuals();
+  };
+
+  // Smooth scroll directly to the Details & About section (#sobre-mi)
+  const handleScrollToDetails = (e: React.MouseEvent) => {
+    e.preventDefault();
+    if (isCleanPhoto) {
+      setIsCleanPhoto(false);
+      stateRef.current.cleanPhoto = false;
+      updateVisuals();
+    }
+    const target = document.getElementById("sobre-mi");
+    if (target) {
+      target.scrollIntoView({ behavior: "smooth" });
+    }
   };
 
   const handleSectionClick = (e: React.MouseEvent) => {
-    // If clicking a link or button, let default action happen
     if ((e.target as HTMLElement).closest("a, button")) return;
-    // On touch devices, tap toggles visibility
     if (typeof window !== "undefined" && window.matchMedia("(pointer: coarse)").matches) {
-      toggleReveal();
+      toggleCleanPhoto();
     }
   };
 
@@ -213,9 +221,6 @@ export default function HeroSection() {
     <section
       ref={sectionRef}
       onClick={handleSectionClick}
-      onMouseEnter={handleMouseEnter}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
       className="relative min-h-[calc(100vh-4rem)] w-full flex flex-col justify-between items-center px-4 sm:px-6 lg:px-12 pt-4 sm:pt-8 lg:pt-14 pb-6 sm:pb-8 overflow-hidden select-none cursor-default"
     >
       {/* 16:9 Full Hero Cinematic Photo Layer */}
@@ -239,32 +244,43 @@ export default function HeroSection() {
         <div className="absolute inset-0 bg-primary/[0.03] mix-blend-screen pointer-events-none" />
       </div>
 
-      {/* Floating Control: Quick Toggle to switch between clean photo & full details */}
-      <div className="relative z-20 w-full max-w-[1280px] mx-auto flex justify-end mb-1 sm:mb-0">
+      {/* Floating Controls: Clean Photo toggle & Ver Detalles direct navigation */}
+      <div className="relative z-20 w-full max-w-[1280px] mx-auto flex items-center justify-end gap-2 mb-1 sm:mb-0">
         <button
-          onClick={toggleReveal}
+          onClick={toggleCleanPhoto}
           type="button"
-          aria-label={isRevealed ? "Atenuar texto para ver foto" : "Mostrar texto completo"}
-          className="interactive inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-surface-container/80 hover:bg-surface-container-high border border-outline-variant/40 text-on-surface-variant hover:text-on-surface text-[10px] sm:text-[11px] font-mono tracking-wide backdrop-blur-md transition-all duration-300 shadow-md active:scale-95"
+          aria-label={isCleanPhoto ? "Mostrar texto del hero" : "Atenuar texto para ver foto limpia"}
+          className="interactive inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-surface-container/85 hover:bg-surface-container-high border border-outline-variant/40 text-on-surface-variant hover:text-on-surface text-[10px] sm:text-[11px] font-mono tracking-wide backdrop-blur-md transition-all duration-300 shadow-md active:scale-95"
         >
-          {isRevealed ? (
+          {isCleanPhoto ? (
+            <>
+              <Eye className="w-3.5 h-3.5 text-primary" />
+              <span>Mostrar Texto</span>
+            </>
+          ) : (
             <>
               <EyeOff className="w-3.5 h-3.5 text-primary" />
               <span>Modo Foto Limpia</span>
             </>
-          ) : (
-            <>
-              <Eye className="w-3.5 h-3.5 text-primary" />
-              <span>Ver Detalles</span>
-            </>
           )}
         </button>
+
+        <a
+          href="#sobre-mi"
+          onClick={handleScrollToDetails}
+          className="interactive inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-primary-container hover:bg-tertiary-container text-on-primary-container text-[10px] sm:text-[11px] font-mono font-semibold tracking-wide backdrop-blur-md transition-all duration-300 shadow-md active:scale-95 hover:shadow-[0_0_16px_rgba(77,142,255,0.4)]"
+        >
+          <span>Ver Detalles</span>
+          <ArrowDown className="w-3.5 h-3.5" />
+        </a>
       </div>
 
       {/* Foreground Hero Typography & Interactive Controls (Reactive Visibility) */}
       <div
         ref={containerRef}
-        style={{ opacity: 0.16 }}
+        onMouseEnter={handleTextMouseEnter}
+        onMouseLeave={handleTextMouseLeave}
+        style={{ opacity: 0.18 }}
         className="relative z-10 w-full max-w-[1280px] mx-auto text-center flex flex-col items-center my-auto py-4 sm:py-8 will-change-transform"
       >
         {/* Role kicker badge */}
@@ -330,15 +346,20 @@ export default function HeroSection() {
         </div>
       </div>
 
-      {/* Reactive Interaction Micro-Hint & Scroll Indicator */}
-      <div className="relative z-10 flex flex-col items-center gap-1.5 sm:gap-2 text-outline font-mono text-[10px] tracking-widest uppercase">
-        <span className="text-[9px] text-outline/70 transition-opacity">
-          Toca o haz scroll para desvelar
+      {/* Reactive Interaction Micro-Hint & Clickable Scroll Indicator */}
+      <a
+        href="#sobre-mi"
+        onClick={handleScrollToDetails}
+        className="interactive relative z-10 flex flex-col items-center gap-1.5 sm:gap-2 text-outline hover:text-primary font-mono text-[10px] tracking-widest uppercase transition-colors group cursor-pointer"
+        aria-label="Ver detalles y desplazarse al perfil"
+      >
+        <span className="text-[9px] text-outline/80 group-hover:text-primary transition-colors">
+          {portfolioContent.hero.scrollIndicator}
         </span>
-        <div className="w-5 h-9 rounded-full border border-outline-variant/60 flex items-start justify-center p-1">
+        <div className="w-5 h-9 rounded-full border border-outline-variant/60 group-hover:border-primary/60 flex items-start justify-center p-1 transition-colors">
           <div className="w-1.5 h-2.5 rounded-full bg-primary animate-bounce" />
         </div>
-      </div>
+      </a>
     </section>
   );
 }

@@ -102,6 +102,9 @@
 html {
   scroll-behavior: smooth;
   color-scheme: dark;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+  overflow-x: hidden;
 }
 
 body {
@@ -109,8 +112,19 @@ body {
   color: var(--color-on-surface);
   font-family: var(--font-inter), sans-serif;
   overflow-x: hidden;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
   selection-background-color: var(--color-primary-container);
   selection-color: var(--color-on-primary-container);
+}
+
+/* Hide scrollbars across Chrome, Safari, and Chromium-based Edge */
+html::-webkit-scrollbar,
+body::-webkit-scrollbar,
+*::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
 }
 
 ::selection {

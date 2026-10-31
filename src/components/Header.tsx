@@ -125,7 +125,7 @@ export default function Header() {
           {/* Mobile Menu Toggle Button */}
           <button
             type="button"
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            onClick={() => setMobileMenuOpen((prev) => !prev)}
             className="md:hidden flex items-center justify-center w-8 h-8 rounded-full bg-surface-container border border-outline-variant/40 text-on-surface hover:text-primary transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
             aria-label={mobileMenuOpen ? "Cerrar menú" : "Abrir menú"}
             aria-expanded={mobileMenuOpen}
@@ -135,53 +135,69 @@ export default function Header() {
         </div>
       </div>
 
-      {/* Mobile Drawer Menu & Overlay */}
-      {mobileMenuOpen && (
-        <>
-          <div
+      {/* Mobile Drawer Menu & Overlay (Always mounted in DOM so Google Translate preserves translated labels on rapid toggles) */}
+      <div
+        onClick={() => setMobileMenuOpen(false)}
+        className={`fixed inset-0 z-40 bg-surface-container-lowest/75 backdrop-blur-sm md:hidden transition-opacity duration-200 motion-reduce:transition-none ${
+          mobileMenuOpen
+            ? "opacity-100 visible pointer-events-auto"
+            : "opacity-0 invisible pointer-events-none"
+        }`}
+        aria-hidden="true"
+      />
+      <div
+        aria-hidden={!mobileMenuOpen}
+        className={`fixed inset-x-4 top-20 z-50 md:hidden bg-surface-container-lowest/95 backdrop-blur-2xl border border-outline-variant/50 rounded-2xl p-6 shadow-2xl transition-all duration-200 motion-reduce:transition-none ${
+          mobileMenuOpen
+            ? "opacity-100 visible pointer-events-auto translate-y-0"
+            : "opacity-0 invisible pointer-events-none -translate-y-2"
+        }`}
+      >
+        <div className="flex items-center justify-between pb-4 mb-2 border-b border-outline-variant/30">
+          <span className="font-mono text-xs uppercase tracking-widest text-on-surface-variant">
+            Navegación
+          </span>
+          <button
+            type="button"
             onClick={() => setMobileMenuOpen(false)}
-            className="fixed inset-0 z-40 bg-surface-container-lowest/75 backdrop-blur-sm md:hidden animate-fade-in motion-reduce:animate-none"
-            aria-hidden="true"
-          />
-          <div className="fixed inset-x-4 top-20 z-50 md:hidden bg-surface-container-lowest/95 backdrop-blur-2xl border border-outline-variant/50 rounded-2xl p-6 shadow-2xl transition-all duration-300 motion-reduce:transition-none">
-            <div className="flex items-center justify-between pb-4 mb-2 border-b border-outline-variant/30">
-              <span className="font-mono text-xs uppercase tracking-widest text-on-surface-variant">
-                Navegación
-              </span>
-              <button
-                type="button"
-                onClick={() => setMobileMenuOpen(false)}
-                className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-surface-container-high border border-outline-variant/40 text-on-surface hover:text-primary transition-colors motion-reduce:transition-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
-                aria-label="Cerrar menú de navegación"
-              >
-                <span className="font-syne text-xs font-semibold">Cerrar</span>
-                <X className="w-4 h-4" />
-              </button>
-            </div>
-            <nav className="flex flex-col gap-2" aria-label="Menú móvil">
-              {portfolioContent.nav.links.map((link) => (
-                <a
-                  key={link.href}
-                  href={link.href}
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="font-syne text-base font-semibold text-on-surface hover:text-primary transition-colors py-2.5 border-b border-outline-variant/20 flex items-center justify-between"
-                >
-                  <span>{link.label}</span>
-                  <ArrowUpRight className="w-4 h-4 text-outline" />
-                </a>
-              ))}
+            tabIndex={mobileMenuOpen ? 0 : -1}
+            className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-surface-container-high border border-outline-variant/40 text-on-surface hover:text-primary transition-colors motion-reduce:transition-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+            aria-label="Cerrar menú de navegación"
+          >
+            <span className="font-syne text-xs font-semibold">Cerrar</span>
+            <X className="w-4 h-4" />
+          </button>
+        </div>
+        <nav className="flex flex-col gap-2" aria-label="Menú móvil">
+          {portfolioContent.nav.links.map((link) => {
+            const isProperNoun = link.label === "Google Analytics";
+            return (
               <a
-                href={portfolioContent.nav.ctaCv.href}
+                key={link.href}
+                href={link.href}
+                tabIndex={mobileMenuOpen ? 0 : -1}
+                translate={isProperNoun ? "no" : undefined}
                 onClick={() => setMobileMenuOpen(false)}
-                className="mt-2 w-full flex items-center justify-center gap-2 py-3 rounded-xl bg-primary-container text-on-primary-container font-syne text-sm font-semibold transition-colors min-h-[44px]"
+                className={`font-syne text-base font-semibold text-on-surface hover:text-primary transition-colors py-2 border-b border-outline-variant/20 flex items-center justify-between ${
+                  isProperNoun ? "notranslate" : ""
+                }`}
               >
-                <span>{portfolioContent.nav.ctaCv.label}</span>
-                <ArrowUpRight className="w-4 h-4" />
+                <span>{link.label}</span>
+                <ArrowUpRight className="w-4 h-4 text-outline" />
               </a>
-            </nav>
-          </div>
-        </>
-      )}
+            );
+          })}
+          <a
+            href={portfolioContent.nav.ctaCv.href}
+            tabIndex={mobileMenuOpen ? 0 : -1}
+            onClick={() => setMobileMenuOpen(false)}
+            className="mt-2 w-full flex items-center justify-center gap-2 py-3 rounded-xl bg-primary-container text-on-primary-container font-syne text-sm font-semibold transition-colors min-h-[44px]"
+          >
+            <span>{portfolioContent.nav.ctaCv.label}</span>
+            <ArrowUpRight className="w-4 h-4" />
+          </a>
+        </nav>
+      </div>
     </header>
   );
 }

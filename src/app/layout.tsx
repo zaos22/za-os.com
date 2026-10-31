@@ -87,6 +87,17 @@ export default function RootLayout({
                 history.scrollRestoration = 'manual';
               }
               window.scrollTo(0, 0);
+              try {
+                var savedLang = localStorage.getItem('preferred_lang') || 'en';
+                if (!localStorage.getItem('preferred_lang')) {
+                  localStorage.setItem('preferred_lang', 'en');
+                }
+                if (savedLang === 'es') {
+                  document.cookie = 'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+                } else {
+                  document.cookie = 'googtrans=/es/' + savedLang + '; path=/; SameSite=Lax';
+                }
+              } catch (e) {}
             `,
           }}
         />

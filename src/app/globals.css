@@ -50,6 +50,19 @@
   /* Base Canvas */
   --color-background: #131313;
   --color-on-background: #e5e2e1;
+
+  /* Flag Palette Tokens */
+  --flag-white: #ffffff;
+  --flag-black: #000000;
+  --flag-uk-blue: #012169;
+  --flag-uk-red: #c8102e;
+  --flag-es-red: #aa151b;
+  --flag-es-yellow: #f1bf00;
+  --flag-de-red: #dd0000;
+  --flag-de-gold: #ffce00;
+  --flag-fr-blue: #002395;
+  --flag-fr-red: #ed2939;
+  --flag-sa-green: #006c35;
 }
 
 @theme {
@@ -221,4 +234,53 @@ body::-webkit-scrollbar,
     visibility: hidden !important;
     pointer-events: none !important;
   }
+}
+
+/* Hide Google Translate default banner, tooltips, spinners, and body offset */
+body > .skiptranslate,
+.goog-te-banner-frame,
+.goog-te-banner-frame.skiptranslate,
+iframe.goog-te-banner-frame,
+iframe.skiptranslate,
+.skiptranslate > iframe,
+.VIpgJd-ZVi9od-ORHb-OEVmcd,
+.VIpgJd-ZVi9od-ORHb,
+.VIpgJd-ZVi9od-aZ2wEe-wOHMyf,
+.VIpgJd-ZVi9od-aZ2wEe-OiiCO,
+.VIpgJd-ZVi9od-xl07Ob-OEVmcd,
+#goog-gt-tt,
+#goog-gt-vt,
+.goog-te-balloon-frame,
+.goog-tooltip,
+.goog-tooltip:hover {
+  display: none !important;
+  visibility: hidden !important;
+  height: 0 !important;
+  width: 0 !important;
+  max-height: 0 !important;
+  max-width: 0 !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  border: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+html,
+body {
+  top: 0px !important;
+  margin-top: 0px !important;
+  position: static !important;
+}
+
+font {
+  background-color: transparent !important;
+  box-shadow: none !important;
+}
+
+.goog-text-highlight,
+.VIpgJd-yAWNEb-VIpgJd-fmcmS-sn54Q {
+  background-color: transparent !important;
+  box-shadow: none !important;
+  border: none !important;
 }

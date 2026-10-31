@@ -5,15 +5,19 @@ import Image from "next/image";
 import Link from "next/link";
 import { portfolioContent } from "@/data/content";
 import { Menu, X, ArrowUpRight } from "lucide-react";
+import LanguageSwitcher from "@/components/LanguageSwitcher";
 
 export default function Header() {
   const [isVisible, setIsVisible] = useState(true);
+  const [isAtTop, setIsAtTop] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
+
+      setIsAtTop(currentScrollY <= 20);
 
       if (currentScrollY > 100) {
         if (currentScrollY > lastScrollY && !mobileMenuOpen) {
@@ -30,6 +34,7 @@ export default function Header() {
       setLastScrollY(currentScrollY);
     };
 
+    handleScroll();
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, [lastScrollY, mobileMenuOpen]);
@@ -44,11 +49,17 @@ export default function Header() {
 
   return (
     <header
-      className={`fixed top-0 inset-x-0 z-40 flex items-center justify-center pt-2 px-3 sm:px-6 transition-transform duration-300 ease-in-out ${
+      className={`fixed top-0 inset-x-0 z-40 flex items-center justify-center pt-2 px-4 sm:px-6 transition-transform duration-300 ease-in-out motion-reduce:transition-none ${
         isVisible ? "translate-y-0" : "-translate-y-24"
       }`}
     >
-      <div className="h-14 sm:h-16 w-full max-w-[1280px] mx-auto px-4 sm:px-6 flex items-center justify-between bg-surface-container-lowest/80 backdrop-blur-xl border border-outline-variant/30 rounded-full shadow-[0_4px_20px_rgba(0,0,0,0.5)]">
+      <div
+        className={`h-14 sm:h-16 w-full max-w-[1280px] mx-auto px-4 sm:px-6 flex items-center justify-between border rounded-full transition-all duration-300 ease-out motion-reduce:transition-none ${
+          isAtTop && !mobileMenuOpen
+            ? "opacity-20 hover:opacity-100 focus-within:opacity-100 bg-surface-container-lowest/35 hover:bg-surface-container-lowest/85 focus-within:bg-surface-container-lowest/85 backdrop-blur-md hover:backdrop-blur-xl border-outline-variant/15 hover:border-outline-variant/40 shadow-sm hover:shadow-lg"
+            : "opacity-100 bg-surface-container-lowest/85 backdrop-blur-xl border-outline-variant/30 shadow-lg"
+        }`}
+      >
         {/* Brand / Logo with Profile Photo */}
         <Link
           href="#"
@@ -56,10 +67,10 @@ export default function Header() {
             e.preventDefault();
             window.scrollTo({ top: 0, behavior: "smooth" });
           }}
-          className="flex items-center gap-2.5 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded-full p-1"
+          className="flex items-center gap-2 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded-full p-1"
           aria-label="Inicio del portafolio - Oussama Zazou"
         >
-          <div className="relative w-8 h-8 rounded-full p-[1.5px] bg-gradient-to-tr from-primary via-secondary-container to-accent-main overflow-hidden shadow-sm transition-transform duration-300 group-hover:scale-110">
+          <div className="relative w-8 h-8 rounded-full p-[1.5px] bg-gradient-to-tr from-primary via-secondary-container to-accent-main overflow-hidden shadow-sm transition-transform duration-300 motion-reduce:transition-none group-hover:scale-110">
             <Image
               src={portfolioContent.personal.profileImage}
               alt={portfolioContent.personal.name}
@@ -69,7 +80,10 @@ export default function Header() {
               priority
             />
           </div>
-          <span className="hidden sm:inline-block font-syne text-xs md:text-sm font-bold text-on-surface tracking-tight uppercase group-hover:text-primary transition-colors">
+          <span
+            translate="no"
+            className="notranslate hidden sm:inline-block font-syne text-xs md:text-sm font-bold text-on-surface tracking-tight uppercase group-hover:text-primary transition-colors"
+          >
             {portfolioContent.nav.brandFullName}
           </span>
         </Link>
@@ -90,11 +104,13 @@ export default function Header() {
           ))}
         </nav>
 
-        {/* Right CTA */}
-        <div className="flex items-center gap-2.5 sm:gap-3">
+        {/* Right CTA & Language Selector */}
+        <div className="flex items-center gap-2">
+          <LanguageSwitcher />
+
           <a
             href={portfolioContent.nav.ctaCv.href}
-            className="hidden sm:inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-primary-container hover:bg-tertiary-container text-on-primary-container font-inter text-xs font-semibold transition-all duration-200 hover:shadow-[0_0_16px_rgba(77,142,255,0.4)]"
+            className="hidden sm:inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary-container hover:bg-tertiary-container text-on-primary-container font-inter text-xs font-semibold transition-all duration-200 motion-reduce:transition-none shadow-sm hover:shadow-md"
           >
             <span>{portfolioContent.nav.ctaCv.label}</span>
             <ArrowUpRight className="w-3.5 h-3.5" />

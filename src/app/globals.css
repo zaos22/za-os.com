@@ -145,6 +145,12 @@ body::-webkit-scrollbar,
   color: var(--color-on-primary-container);
 }
 
+/* Ensure GSAP pin-spacer resizes instantaneously with viewport width */
+.pin-spacer {
+  width: 100% !important;
+  max-width: 100% !important;
+}
+
 /* Marquee Animations */
 @keyframes marquee {
   0% {

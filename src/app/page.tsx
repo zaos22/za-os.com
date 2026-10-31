@@ -20,7 +20,7 @@ export default function Home() {
 
       <Header />
 
-      <main className="relative z-10 w-full pt-16 flex flex-col items-center">
+      <main className="relative z-10 w-full flex flex-col items-center">
         <HeroSection />
         <AboutSection />
         <SkillsSection />

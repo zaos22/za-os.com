@@ -96,7 +96,7 @@ export default function AboutSection() {
     <section
       ref={sectionRef}
       id="sobre-mi"
-      className="relative z-10 w-full max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-12 py-12 sm:py-20"
+      className="relative z-10 w-full max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-12 pt-4 sm:pt-8 pb-12 sm:pb-20"
     >
       <div className="relative rounded-3xl bg-surface-container-lowest/80 border border-outline-variant/30 backdrop-blur-xl p-6 sm:p-10 lg:p-14 overflow-hidden shadow-2xl">
         {/* Ambient Corner Glow */}

@@ -8,7 +8,7 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 export default function HeroSection() {
-  const sectionRef = useRef<HTMLDivElement>(null);
+  const sectionRef = useRef<HTMLElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const bgImageRef = useRef<HTMLDivElement>(null);
@@ -218,25 +218,25 @@ export default function HeroSection() {
   const titleWords = portfolioContent.hero.title.split(" ");
 
   return (
-    <div ref={sectionRef} className="relative w-full h-[175vh]">
-      <section
-        onClick={handleSectionClick}
-        className="sticky top-0 h-screen w-full flex flex-col justify-between items-center px-4 sm:px-6 lg:px-12 pt-16 sm:pt-20 pb-6 sm:pb-8 overflow-hidden select-none cursor-default"
+    <section
+      ref={sectionRef}
+      onClick={handleSectionClick}
+      className="relative min-h-screen !w-full !max-w-full flex flex-col justify-between items-center px-4 sm:px-6 lg:px-12 pt-16 sm:pt-20 pb-6 sm:pb-8 overflow-hidden select-none cursor-default"
+    >
+      {/* 16:9 Full Hero Cinematic Photo Layer */}
+      <div
+        ref={bgImageRef}
+        className="absolute inset-0 z-0 w-full h-full overflow-hidden pointer-events-none will-change-transform select-none"
+        aria-hidden="true"
       >
-        {/* 16:9 Full Hero Cinematic Photo Layer */}
-        <div
-          ref={bgImageRef}
-          className="absolute inset-0 z-0 w-full h-full overflow-hidden pointer-events-none will-change-transform select-none"
-          aria-hidden="true"
-        >
-          <Image
-            src={portfolioContent.hero.image}
-            alt={portfolioContent.hero.imageAlt}
-            fill
-            priority
-            sizes="100vw"
-            className="object-cover object-[center_24%] filter contrast-[1.04] brightness-[0.94]"
-          />
+        <Image
+          src={portfolioContent.hero.image}
+          alt={portfolioContent.hero.imageAlt}
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover object-[center_24%] filter contrast-[1.04] brightness-[0.94]"
+        />
 
         {/* Subtle, non-intrusive edge blends preserving Oussama's portrait */}
         <div className="absolute top-0 inset-x-0 h-24 sm:h-36 bg-gradient-to-b from-surface/85 via-surface/35 to-transparent" />
@@ -331,7 +331,6 @@ export default function HeroSection() {
           <div className="w-2 h-2.5 rounded-full bg-primary animate-bounce motion-reduce:animate-none" />
         </div>
       </a>
-      </section>
-    </div>
+    </section>
   );
 }

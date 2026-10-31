@@ -15,11 +15,13 @@ export default function Footer() {
     <footer className="relative z-10 w-full bg-surface-container-lowest mt-16 border-t border-outline-variant/20">
       <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-12 py-12 flex flex-col md:flex-row items-center justify-between gap-6">
         {/* Brand & Role */}
-        <div className="flex flex-col items-center md:items-start gap-1">
+        <div className="flex flex-col items-center md:items-start gap-1 text-center md:text-left">
           <span className="font-syne text-base font-bold text-on-surface tracking-tight">
             {footer.title}
           </span>
-          <p className="font-mono text-xs text-outline">{footer.role}</p>
+          <p className="font-mono text-xs text-outline text-center md:text-left max-w-sm sm:max-w-none leading-relaxed">
+            {footer.role}
+          </p>
         </div>
 
         {/* Quick Footer Links */}

@@ -80,7 +80,7 @@ export default function Preloader() {
               src={portfolioContent.personal.profileImage}
               alt={portfolioContent.personal.name}
               fill
-              priority
+              loading="eager"
               sizes="112px"
               className="object-cover"
             />

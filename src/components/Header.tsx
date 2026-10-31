@@ -77,7 +77,7 @@ export default function Header() {
               width={32}
               height={32}
               className="w-full h-full rounded-full object-cover"
-              priority
+              loading="eager"
             />
           </div>
           <span

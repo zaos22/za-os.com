@@ -85,16 +85,16 @@ export default function AboutSection() {
     <section
       ref={sectionRef}
       id="sobre-mi"
-      className="relative z-10 w-full max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-12 py-20"
+      className="relative z-10 w-full max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-12 py-12 sm:py-20"
     >
-      <div className="relative rounded-3xl bg-surface-container-lowest/80 border border-outline-variant/30 backdrop-blur-xl p-6 sm:p-10 lg:p-14 overflow-hidden shadow-2xl">
+      <div className="relative rounded-3xl bg-surface-container-lowest/80 border border-outline-variant/30 backdrop-blur-xl p-5 sm:p-10 lg:p-14 overflow-hidden shadow-2xl">
         {/* Ambient Corner Glow */}
         <div
           className="pointer-events-none absolute -top-24 -right-24 w-80 h-80 bg-primary/10 rounded-full blur-[90px]"
           aria-hidden="true"
         />
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 lg:gap-12 items-center">
           {/* Profile Photo with Radiant Electric Blue Halo */}
           <div className="lg:col-span-4 flex flex-col items-center justify-center">
             <div ref={photoRef} className="relative group will-change-transform">
@@ -104,7 +104,7 @@ export default function AboutSection() {
                 aria-hidden="true"
               />
 
-              <div className="relative w-48 h-48 sm:w-56 sm:h-56 rounded-full p-1 bg-surface-container border border-primary/50 shadow-[0_0_32px_rgba(77,142,255,0.35)] overflow-hidden">
+              <div className="relative w-36 h-36 xs:w-44 xs:h-44 sm:w-56 sm:h-56 rounded-full p-1 bg-surface-container border border-primary/50 shadow-[0_0_32px_rgba(77,142,255,0.35)] overflow-hidden">
                 <Image
                   src={portfolioContent.personal.profileImage}
                   alt={portfolioContent.about.heading}
@@ -118,20 +118,20 @@ export default function AboutSection() {
           </div>
 
           {/* Factual Information & Quick Channels */}
-          <div className="lg:col-span-8 flex flex-col justify-center space-y-6">
+          <div className="lg:col-span-8 flex flex-col justify-center space-y-4 sm:space-y-6">
             <div className="inline-flex items-center gap-2 font-mono text-xs text-primary uppercase tracking-widest">
               <span className="w-2 h-2 rounded-full bg-primary" />
               <span>{portfolioContent.about.badge}</span>
             </div>
 
-            <h2 className="font-syne text-3xl sm:text-4xl font-bold tracking-tight text-on-surface">
+            <h2 className="font-syne text-2xl sm:text-4xl font-bold tracking-tight text-on-surface">
               {portfolioContent.about.heading}
             </h2>
 
             {/* Word-by-word lighted bio */}
             <p
               ref={textRef}
-              className="font-inter text-lg sm:text-xl leading-relaxed text-on-surface-variant"
+              className="font-inter text-base sm:text-xl leading-relaxed text-on-surface-variant"
             >
               {bioWords.map((word, index) => (
                 <span key={index} className="scrub-word inline-block mr-1.5 transition-colors">
@@ -141,7 +141,7 @@ export default function AboutSection() {
             </p>
 
             {/* Official Channels Details Box */}
-            <div className="rounded-xl bg-surface-container-lowest border border-outline-variant/40 p-5 font-mono text-xs space-y-3">
+            <div className="rounded-xl bg-surface-container-lowest border border-outline-variant/40 p-4 sm:p-5 font-mono text-xs space-y-3">
               <div className="flex items-center justify-between text-outline text-[11px] pb-2 border-b border-outline-variant/20 tracking-wider uppercase">
                 <span>{portfolioContent.about.directChannelsLabel}</span>
               </div>

@@ -85,15 +85,15 @@ export default function SkillsSection() {
     <section
       ref={sectionRef}
       id="habilidades"
-      className="relative z-10 w-full max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-12 py-20"
+      className="relative z-10 w-full max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-12 py-12 sm:py-20"
     >
       {/* Section Header */}
-      <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
+      <div className="flex flex-col md:flex-row md:items-end justify-between gap-3 sm:gap-4 mb-6 sm:mb-8">
         <div>
           <div className="font-mono text-xs text-primary uppercase tracking-widest mb-1.5">
             {portfolioContent.skills.badge}
           </div>
-          <h2 className="font-syne text-3xl sm:text-4xl font-bold tracking-tight text-on-surface">
+          <h2 className="font-syne text-2xl sm:text-4xl font-bold tracking-tight text-on-surface">
             {portfolioContent.skills.heading}
           </h2>
         </div>
@@ -103,7 +103,7 @@ export default function SkillsSection() {
       </div>
 
       {/* Infinite Horizontal Marquee */}
-      <div className="relative w-full overflow-hidden rounded-xl bg-surface-container-lowest/60 border border-outline-variant/30 py-3.5 mb-10 select-none">
+      <div className="relative w-full overflow-hidden rounded-xl bg-surface-container-lowest/60 border border-outline-variant/30 py-3 mb-6 sm:mb-10 select-none">
         <div className="animate-marquee gap-8 font-mono text-xs text-on-surface-variant uppercase tracking-widest">
           {/* Double array for continuous seamless loop */}
           {[...portfolioContent.skills.marqueeAreas, ...portfolioContent.skills.marqueeAreas].map(
@@ -120,7 +120,7 @@ export default function SkillsSection() {
       {/* Bento Grid (9 Modules) */}
       <div
         ref={cardsContainerRef}
-        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6"
       >
         {portfolioContent.skills.modules.map((module) => {
           const IconComponent = moduleIcons[module.id] || Code2;
@@ -129,7 +129,7 @@ export default function SkillsSection() {
           return (
             <div
               key={module.id}
-              className="bento-skill-card bento-glow-card group relative rounded-2xl bg-surface-container-lowest/80 border border-outline-variant/30 p-6 sm:p-7 hover:border-primary/50 transition-all duration-300 hover:shadow-[0_0_24px_-4px_rgba(77,142,255,0.2)] flex flex-col justify-between"
+              className="bento-skill-card bento-glow-card group relative rounded-2xl bg-surface-container-lowest/80 border border-outline-variant/30 p-5 sm:p-7 hover:border-primary/50 transition-all duration-300 hover:shadow-[0_0_24px_-4px_rgba(77,142,255,0.2)] flex flex-col justify-between"
             >
               <div>
                 <div className="flex items-center justify-between mb-4">

@@ -96,11 +96,11 @@ export default function AnalyticsSection() {
     <section
       ref={sectionRef}
       id="google-analytics"
-      className="relative z-10 w-full max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-12 py-20"
+      className="relative z-10 w-full max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-12 py-12 sm:py-20"
     >
       <div
         ref={cardRef}
-        className="relative rounded-3xl bg-surface-container-lowest/90 border border-outline-variant/40 p-6 sm:p-10 lg:p-12 overflow-hidden shadow-2xl"
+        className="relative rounded-3xl bg-surface-container-lowest/90 border border-outline-variant/40 p-5 sm:p-10 lg:p-12 overflow-hidden shadow-2xl"
       >
         {/* Glow Ambient Backdrop */}
         <div
@@ -108,24 +108,24 @@ export default function AnalyticsSection() {
           aria-hidden="true"
         />
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 lg:gap-12 items-center">
           {/* Official Google Credential Card */}
-          <div className="lg:col-span-6 flex flex-col justify-between rounded-2xl bg-surface-container/70 border border-outline-variant/50 p-6 sm:p-8 relative overflow-hidden">
-            <div className="flex items-center gap-4 mb-6">
+          <div className="lg:col-span-6 flex flex-col justify-between rounded-2xl bg-surface-container/70 border border-outline-variant/50 p-5 sm:p-8 relative overflow-hidden">
+            <div className="flex items-center gap-3.5 sm:gap-4 mb-5 sm:mb-6">
               {/* Badge with 3D Tilt Hover and Conic Gradient Ring */}
               <div
                 ref={badgeRef}
                 onMouseMove={handleBadgeMouseMove}
                 onMouseLeave={handleBadgeMouseLeave}
                 style={tiltStyle}
-                className="relative flex items-center justify-center w-16 h-16 rounded-full bg-surface-container-highest p-1 shadow-inner cursor-pointer will-change-transform shrink-0"
+                className="relative flex items-center justify-center w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-surface-container-highest p-1 shadow-inner cursor-pointer will-change-transform shrink-0"
               >
                 <div
                   className="absolute inset-0 rounded-full p-[2px] bg-gradient-to-tr from-[#EA4335] via-[#4285F4] to-[#34A853]"
                   aria-hidden="true"
                 />
                 <div className="relative w-full h-full rounded-full bg-surface-container-lowest flex items-center justify-center">
-                  <Award className="w-7 h-7 text-primary" />
+                  <Award className="w-6 h-6 sm:w-7 sm:h-7 text-primary" />
                 </div>
               </div>
 
@@ -134,7 +134,7 @@ export default function AnalyticsSection() {
                   <span className="w-1.5 h-1.5 rounded-full bg-primary" />
                   <span>{analyticsData.badge}</span>
                 </span>
-                <h3 className="font-syne text-lg sm:text-xl font-bold text-on-surface mt-1.5">
+                <h3 className="font-syne text-base sm:text-xl font-bold text-on-surface mt-1 sm:mt-1.5">
                   {analyticsData.title}
                 </h3>
                 <p className="font-mono text-xs text-outline">{analyticsData.issuer}</p>
@@ -142,7 +142,7 @@ export default function AnalyticsSection() {
             </div>
 
             {/* Official Certification Metadata */}
-            <div className="rounded-xl bg-surface-container-lowest/90 border border-outline-variant/30 p-4 font-mono text-xs space-y-2.5 mb-6">
+            <div className="rounded-xl bg-surface-container-lowest/90 border border-outline-variant/30 p-3.5 sm:p-4 font-mono text-xs space-y-2.5 mb-5 sm:mb-6">
               <div className="flex items-center justify-between">
                 <span className="text-outline">Emitido:</span>
                 <span className="text-on-surface font-medium">{analyticsData.issueDate}</span>
@@ -153,7 +153,7 @@ export default function AnalyticsSection() {
               </div>
               <div className="flex items-center justify-between pt-1.5 border-t border-outline-variant/20">
                 <span className="text-outline">ID de certificado:</span>
-                <span className="text-primary font-bold">{analyticsData.certId}</span>
+                <span className="text-primary font-bold text-[11px] sm:text-xs truncate ml-2">{analyticsData.certId}</span>
               </div>
             </div>
 
@@ -162,7 +162,7 @@ export default function AnalyticsSection() {
               href={analyticsData.verificationUrl}
               target="_blank"
               rel="noreferrer"
-              className="interactive w-full inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-primary-container hover:bg-tertiary-container text-on-primary-container font-syne text-xs sm:text-sm font-semibold transition-all duration-200 shadow-[0_0_16px_rgba(77,142,255,0.3)] hover:-translate-y-0.5"
+              className="interactive w-full inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-primary-container hover:bg-tertiary-container text-on-primary-container font-syne text-xs sm:text-sm font-semibold transition-all duration-200 shadow-[0_0_16px_rgba(77,142,255,0.3)] hover:-translate-y-0.5 min-h-[44px]"
             >
               <span>{analyticsData.ctaVerify}</span>
               <ExternalLink className="w-4 h-4" />
@@ -170,9 +170,9 @@ export default function AnalyticsSection() {
           </div>
 
           {/* Technical Value & Abstract Animated Chart */}
-          <div className="lg:col-span-6 flex flex-col justify-between space-y-6">
+          <div className="lg:col-span-6 flex flex-col justify-between space-y-5 sm:space-y-6">
             <div>
-              <h4 className="font-syne text-xl sm:text-2xl font-bold text-on-surface mb-2">
+              <h4 className="font-syne text-lg sm:text-2xl font-bold text-on-surface mb-2">
                 {analyticsData.valueHeading}
               </h4>
               <p className="font-inter text-sm sm:text-base text-on-surface-variant mb-6 leading-relaxed">

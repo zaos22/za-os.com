@@ -199,15 +199,25 @@ export default function HeroSection() {
     });
   };
 
-  const titleText = portfolioContent.hero.title;
+  const handleSectionClick = (e: React.MouseEvent) => {
+    // If clicking a link or button, let default action happen
+    if ((e.target as HTMLElement).closest("a, button")) return;
+    // On touch devices, tap toggles visibility
+    if (typeof window !== "undefined" && window.matchMedia("(pointer: coarse)").matches) {
+      toggleReveal();
+    }
+  };
+
+  const titleWords = portfolioContent.hero.title.split(" ");
 
   return (
     <section
       ref={sectionRef}
+      onClick={handleSectionClick}
       onMouseEnter={handleMouseEnter}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
-      className="relative min-h-[calc(100vh-4rem)] w-full flex flex-col justify-between items-center px-4 sm:px-6 lg:px-12 pt-20 pb-8 overflow-hidden select-none"
+      className="relative min-h-[calc(100vh-4rem)] w-full flex flex-col justify-between items-center px-4 sm:px-6 lg:px-12 pt-4 sm:pt-8 lg:pt-14 pb-6 sm:pb-8 overflow-hidden select-none cursor-default"
     >
       {/* 16:9 Full Hero Cinematic Photo Layer */}
       <div
@@ -221,32 +231,32 @@ export default function HeroSection() {
           fill
           priority
           sizes="100vw"
-          className="object-cover object-[center_28%] sm:object-[center_22%] lg:object-center filter contrast-[1.04] brightness-[0.92] sm:brightness-[0.96]"
+          className="object-cover object-[center_20%] sm:object-[center_22%] lg:object-center filter contrast-[1.04] brightness-[0.92] sm:brightness-[0.96]"
         />
 
         {/* Subtle, non-intrusive edge blends preserving Oussama's portrait */}
-        <div className="absolute top-0 inset-x-0 h-28 sm:h-36 bg-gradient-to-b from-surface/85 via-surface/35 to-transparent" />
-        <div className="absolute bottom-0 inset-x-0 h-36 sm:h-44 bg-gradient-to-t from-surface via-surface/65 to-transparent" />
+        <div className="absolute top-0 inset-x-0 h-24 sm:h-36 bg-gradient-to-b from-surface/85 via-surface/35 to-transparent" />
+        <div className="absolute bottom-0 inset-x-0 h-32 sm:h-44 bg-gradient-to-t from-surface via-surface/65 to-transparent" />
         <div className="absolute inset-0 bg-primary/[0.03] mix-blend-screen pointer-events-none" />
       </div>
 
       {/* Floating Control: Quick Toggle to switch between clean photo & full details */}
-      <div className="relative z-20 w-full max-w-[1280px] mx-auto flex justify-end">
+      <div className="relative z-20 w-full max-w-[1280px] mx-auto flex justify-end mb-1 sm:mb-0">
         <button
           onClick={toggleReveal}
           type="button"
           aria-label={isRevealed ? "Atenuar texto para ver foto" : "Mostrar texto completo"}
-          className="interactive inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-surface-container/70 hover:bg-surface-container-high/90 border border-outline-variant/40 text-on-surface-variant hover:text-on-surface text-[11px] font-mono tracking-wide backdrop-blur-md transition-all duration-300 shadow-md"
+          className="interactive inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-surface-container/80 hover:bg-surface-container-high border border-outline-variant/40 text-on-surface-variant hover:text-on-surface text-[10px] sm:text-[11px] font-mono tracking-wide backdrop-blur-md transition-all duration-300 shadow-md active:scale-95"
         >
           {isRevealed ? (
             <>
               <EyeOff className="w-3.5 h-3.5 text-primary" />
-              <span className="hidden sm:inline">Modo Foto Limpia</span>
+              <span>Modo Foto Limpia</span>
             </>
           ) : (
             <>
               <Eye className="w-3.5 h-3.5 text-primary" />
-              <span className="hidden sm:inline">Ver Detalles</span>
+              <span>Ver Detalles</span>
             </>
           )}
         </button>
@@ -256,41 +266,46 @@ export default function HeroSection() {
       <div
         ref={containerRef}
         style={{ opacity: 0.16 }}
-        className="relative z-10 w-full max-w-[1280px] mx-auto text-center flex flex-col items-center my-auto py-6 sm:py-10 will-change-transform"
+        className="relative z-10 w-full max-w-[1280px] mx-auto text-center flex flex-col items-center my-auto py-4 sm:py-8 will-change-transform"
       >
         {/* Role kicker badge */}
-        <div className="inline-flex items-center gap-2 mb-6 px-4 py-1.5 rounded-full bg-surface-container-high/90 border border-outline-variant/50 text-on-surface font-mono text-xs tracking-wider uppercase backdrop-blur-md shadow-lg">
-          <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
+        <div className="inline-flex items-center justify-center gap-2 mb-4 sm:mb-6 px-3.5 sm:px-4 py-1.5 rounded-full bg-surface-container-high/90 border border-outline-variant/50 text-on-surface font-mono text-[10px] sm:text-xs tracking-wider uppercase backdrop-blur-md shadow-lg max-w-[92vw] text-center leading-snug">
+          <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse shrink-0" />
           <span>{portfolioContent.hero.role}</span>
         </div>
 
-        {/* Giant Hero Title with Letter Mask Animation */}
+        {/* Giant Hero Title with Word-level Wrapping to prevent broken words on mobile */}
         <h1
           ref={titleRef}
-          className="font-syne text-5xl sm:text-7xl lg:text-9xl tracking-tighter font-extrabold uppercase text-transparent bg-clip-text bg-gradient-to-b from-white via-white/95 to-white/75 max-w-6xl leading-[0.92] flex flex-wrap justify-center overflow-hidden py-2 drop-shadow-[0_4px_30px_rgba(0,0,0,0.95)]"
+          className="font-syne text-[2.5rem] xs:text-[3.25rem] sm:text-6xl md:text-7xl lg:text-9xl tracking-tighter font-extrabold uppercase text-transparent bg-clip-text bg-gradient-to-b from-white via-white/95 to-white/75 max-w-6xl leading-[0.94] flex flex-wrap justify-center overflow-hidden py-1 sm:py-2 drop-shadow-[0_4px_30px_rgba(0,0,0,0.95)]"
         >
-          {titleText.split("").map((char, index) => (
+          {titleWords.map((word, wordIndex) => (
             <span
-              key={index}
-              className={`hero-letter inline-block ${
-                char === " " ? "w-4 sm:w-6 lg:w-8" : ""
-              }`}
+              key={wordIndex}
+              className="inline-flex whitespace-nowrap mx-1.5 sm:mx-2.5 lg:mx-4"
             >
-              {char}
+              {word.split("").map((char, charIndex) => (
+                <span
+                  key={charIndex}
+                  className="hero-letter inline-block"
+                >
+                  {char}
+                </span>
+              ))}
             </span>
           ))}
         </h1>
 
         {/* Subtitle Description with subtle glass backdrop for crisp readability */}
-        <p className="mt-6 max-w-2xl font-inter text-base sm:text-lg text-on-surface font-normal leading-relaxed drop-shadow-[0_2px_14px_rgba(0,0,0,0.98)] px-4 py-1 rounded-xl">
+        <p className="mt-4 sm:mt-6 max-w-xl sm:max-w-2xl font-inter text-sm sm:text-base lg:text-lg text-on-surface font-normal leading-relaxed drop-shadow-[0_2px_14px_rgba(0,0,0,0.98)] px-3 sm:px-4 py-1 rounded-xl">
           {portfolioContent.hero.description}
         </p>
 
         {/* Action Buttons */}
-        <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
+        <div className="mt-6 sm:mt-8 flex flex-wrap items-center justify-center gap-2.5 sm:gap-3 w-full max-w-md sm:max-w-none">
           <a
             href="#proyectos"
-            className="interactive inline-flex items-center gap-2 px-6 py-3 rounded-full bg-primary-container hover:bg-tertiary-container text-on-primary-container font-syne text-xs sm:text-sm font-semibold transition-all duration-300 shadow-[0_0_24px_-4px_rgba(77,142,255,0.5)] hover:shadow-[0_0_32px_-2px_rgba(77,142,255,0.7)] hover:-translate-y-0.5"
+            className="interactive inline-flex items-center justify-center gap-2 px-5 sm:px-6 py-2.5 sm:py-3 rounded-full bg-primary-container hover:bg-tertiary-container text-on-primary-container font-syne text-xs sm:text-sm font-semibold transition-all duration-300 shadow-[0_0_24px_-4px_rgba(77,142,255,0.5)] hover:shadow-[0_0_32px_-2px_rgba(77,142,255,0.7)] hover:-translate-y-0.5 min-h-[44px]"
           >
             <span>{portfolioContent.hero.ctaProjects}</span>
             <ArrowDown className="w-4 h-4" />
@@ -298,7 +313,7 @@ export default function HeroSection() {
 
           <a
             href="#contacto"
-            className="interactive inline-flex items-center gap-2 px-6 py-3 rounded-full bg-surface-container-high/90 hover:bg-surface-container-highest text-on-surface font-syne text-xs sm:text-sm font-semibold border border-outline-variant/60 transition-all duration-300 backdrop-blur-md hover:-translate-y-0.5 shadow-lg"
+            className="interactive inline-flex items-center justify-center gap-2 px-5 sm:px-6 py-2.5 sm:py-3 rounded-full bg-surface-container-high/90 hover:bg-surface-container-highest text-on-surface font-syne text-xs sm:text-sm font-semibold border border-outline-variant/60 transition-all duration-300 backdrop-blur-md hover:-translate-y-0.5 shadow-lg min-h-[44px]"
           >
             <FileText className="w-4 h-4 text-outline" />
             <span>{portfolioContent.hero.ctaCv}</span>
@@ -308,7 +323,7 @@ export default function HeroSection() {
             href={portfolioContent.personal.linkedin}
             target="_blank"
             rel="noreferrer"
-            className="interactive inline-flex items-center gap-2 px-5 py-3 rounded-full bg-surface-container/70 hover:bg-surface-container-high text-on-surface font-syne text-xs sm:text-sm font-medium border border-outline-variant/40 transition-all duration-300 backdrop-blur-md shadow-md"
+            className="interactive inline-flex items-center justify-center gap-2 px-4 sm:px-5 py-2.5 sm:py-3 rounded-full bg-surface-container/70 hover:bg-surface-container-high text-on-surface font-syne text-xs sm:text-sm font-medium border border-outline-variant/40 transition-all duration-300 backdrop-blur-md shadow-md min-h-[44px]"
           >
             <ExternalLink className="w-4 h-4 text-outline" />
             <span>{portfolioContent.hero.ctaLinkedIn}</span>
@@ -317,9 +332,9 @@ export default function HeroSection() {
       </div>
 
       {/* Reactive Interaction Micro-Hint & Scroll Indicator */}
-      <div className="relative z-10 flex flex-col items-center gap-2 text-outline font-mono text-[10px] tracking-widest uppercase">
+      <div className="relative z-10 flex flex-col items-center gap-1.5 sm:gap-2 text-outline font-mono text-[10px] tracking-widest uppercase">
         <span className="text-[9px] text-outline/70 transition-opacity">
-          Mueve el cursor o haz scroll para desvelar
+          Toca o haz scroll para desvelar
         </span>
         <div className="w-5 h-9 rounded-full border border-outline-variant/60 flex items-start justify-center p-1">
           <div className="w-1.5 h-2.5 rounded-full bg-primary animate-bounce" />

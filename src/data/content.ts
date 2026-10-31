@@ -245,19 +245,29 @@ export const portfolioContent = {
     profileHandle: "github.com/zaos22 ↗",
     repos: [
       {
-        name: "abid.com",
-        description: "Professional Portfolio Website",
-        url: "https://github.com/zaos22/abid.com",
+        name: "za-os.com",
+        description: "Portafolio personal interactivo desarrollado con Next.js, TypeScript, Tailwind CSS y GSAP.",
+        url: "https://github.com/zaos22/za-os.com",
       },
       {
-        name: "my_website",
-        description: "Minimalist portfolio page with premium design and simple structure.",
-        url: "https://github.com/zaos22/my_website",
+        name: "toptop_app",
+        description: "Repositorio de aplicación y arquitectura de software en GitHub.",
+        url: "https://github.com/zaos22/toptop_app",
       },
       {
-        name: "ai-secretary-bot",
-        description: null,
-        url: "https://github.com/zaos22/ai-secretary-bot",
+        name: "ohana",
+        description: "Código fuente y desarrollo web para Cafetería Ohana.",
+        url: "https://github.com/zaos22/ohana",
+      },
+      {
+        name: "fisiomed.com",
+        description: "Código fuente y plataforma web para la clínica de fisioterapia Fisiomed.",
+        url: "https://github.com/zaos22/fisiomed.com",
+      },
+      {
+        name: "arahmatours",
+        description: "Código fuente y plataforma web para la agencia de viajes Arahma Tours.",
+        url: "https://github.com/zaos22/arahmatours",
       },
     ] as GitHubRepoItem[],
   },

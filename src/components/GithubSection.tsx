@@ -32,8 +32,8 @@ export default function GithubSection() {
           </a>
         </div>
 
-        {/* 3 Real Repositories Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {/* Repositories Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {github.repos.map((repo, idx) => (
             <a
               key={idx}

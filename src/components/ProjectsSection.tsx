@@ -15,11 +15,12 @@ const projectIcons: Record<string, React.ElementType> = {
 
 function ProjectCard({ project, index }: { project: ProjectItem; index: number }) {
   const [iframeError, setIframeError] = useState(false);
+  const [imageError, setImageError] = useState(false);
   const IconComponent = projectIcons[project.id] || Globe;
 
   return (
     <div
-      className="project-stacked-card rounded-3xl bg-surface-container-lowest border border-outline-variant/40 overflow-hidden flex flex-col justify-between shadow-2xl transition-all duration-300 hover:border-primary/50 hover:shadow-[0_0_32px_-4px_rgba(77,142,255,0.25)] mb-6 sm:mb-8"
+      className="group project-stacked-card rounded-3xl bg-surface-container-lowest border border-outline-variant/40 overflow-hidden flex flex-col justify-between shadow-2xl transition-all duration-300 hover:border-primary/50 hover:shadow-[0_0_32px_-4px_rgba(77,142,255,0.25)] mb-6 sm:mb-8"
       style={{ zIndex: 10 + index }}
     >
       <div>
@@ -44,7 +45,16 @@ function ProjectCard({ project, index }: { project: ProjectItem; index: number }
 
         {/* Live Preview / Fallback Frame */}
         <div className="relative w-full h-44 xs:h-52 sm:h-72 bg-surface-container-low border-b border-outline-variant/20 overflow-hidden flex items-center justify-center">
-          {!project.isPlaceholder && !iframeError ? (
+          {project.previewImage && !imageError ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              src={project.previewImage}
+              alt={`Vista previa de ${project.title}`}
+              loading="lazy"
+              onError={() => setImageError(true)}
+              className="w-full h-full object-cover object-top opacity-95 transition-all duration-500 motion-reduce:transition-none group-hover:scale-105 group-hover:opacity-100"
+            />
+          ) : !project.isPlaceholder && !project.previewImage && !iframeError ? (
             <iframe
               src={project.url}
               title={`Vista previa de ${project.title}`}

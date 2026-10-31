@@ -15,6 +15,7 @@ export interface ProjectItem {
   displayUrl: string;
   tags: string[];
   isPlaceholder: boolean;
+  previewImage?: string;
 }
 
 export interface SkillModule {
@@ -211,10 +212,12 @@ export const portfolioContent = {
         id: "zaosfy",
         title: "Zaosfy",
         description: "Agencia de automatización de negocios e Inteligencia Artificial",
-        url: "https://www.zaosfy.online/",
+        url: "https://zaosfy.online/",
         displayUrl: "www.zaosfy.online",
         tags: ["AI", "Web"],
         isPlaceholder: false,
+        previewImage:
+          "https://api.microlink.io/?url=https%3A%2F%2Fzaosfy.online&screenshot=true&meta=false&embed=screenshot.url",
       },
       {
         id: "ohana",

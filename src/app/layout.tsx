@@ -77,6 +77,7 @@ export default function RootLayout({
   return (
     <html
       lang="es"
+      suppressHydrationWarning
       className={`${syne.variable} ${inter.variable} ${jetbrainsMono.variable} dark`}
     >
       <head>
@@ -106,7 +107,10 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </head>
-      <body className="bg-surface font-inter text-on-surface antialiased relative min-h-screen">
+      <body
+        suppressHydrationWarning
+        className="bg-surface font-inter text-on-surface antialiased relative min-h-screen"
+      >
         <Preloader />
         <ScrollProgressBar />
         <CustomCursor />

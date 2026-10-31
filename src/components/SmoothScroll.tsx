@@ -12,8 +12,20 @@ export default function SmoothScroll({ children }: { children: React.ReactNode }
       "(prefers-reduced-motion: reduce)"
     ).matches;
 
+    if ("scrollRestoration" in history) {
+      history.scrollRestoration = "manual";
+    }
+    window.scrollTo(0, 0);
+
+    const handleBeforeUnload = () => {
+      window.scrollTo(0, 0);
+    };
+    window.addEventListener("beforeunload", handleBeforeUnload);
+
     if (prefersReducedMotion) {
-      return;
+      return () => {
+        window.removeEventListener("beforeunload", handleBeforeUnload);
+      };
     }
 
     gsap.registerPlugin(ScrollTrigger);
@@ -24,6 +36,8 @@ export default function SmoothScroll({ children }: { children: React.ReactNode }
       touchMultiplier: 2,
       wheelMultiplier: 1,
     });
+
+    lenis.scrollTo(0, { immediate: true });
 
     lenis.on("scroll", ScrollTrigger.update);
 
@@ -40,6 +54,7 @@ export default function SmoothScroll({ children }: { children: React.ReactNode }
     });
 
     return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
       gsap.ticker.remove(tickerCallback);
       lenis.destroy();
       ScrollTrigger.getAll().forEach((st) => st.kill());

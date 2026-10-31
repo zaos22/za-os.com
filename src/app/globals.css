@@ -212,3 +212,13 @@ body::-webkit-scrollbar,
     overflow-x: auto;
   }
 }
+
+/* Custom Cursor: Strictly Desktop PC only (hidden on touch, tablet, mobile, coarse screens) */
+@media (hover: none), (pointer: coarse), (max-width: 1023px) {
+  .custom-cursor-element {
+    display: none !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+  }
+}

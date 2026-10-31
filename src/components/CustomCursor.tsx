@@ -9,13 +9,30 @@ export default function CustomCursor() {
   const [isEnabled, setIsEnabled] = useState(false);
 
   useEffect(() => {
-    // Only enable on desktop with fine pointer and no reduced motion preference
-    const hasFinePointer = window.matchMedia("(pointer: fine)").matches;
-    const prefersReducedMotion = window.matchMedia(
-      "(prefers-reduced-motion: reduce)"
-    ).matches;
+    // Strictly restrict to desktop PC with true mouse/trackpad (no touch / coarse screens)
+    const checkIsDesktopPC = () => {
+      const hasHover = window.matchMedia("(hover: hover)").matches;
+      const hasFinePointer = window.matchMedia("(pointer: fine)").matches;
+      const isCoarse = window.matchMedia("(pointer: coarse)").matches;
+      const prefersReducedMotion = window.matchMedia(
+        "(prefers-reduced-motion: reduce)"
+      ).matches;
+      const isTouch =
+        "ontouchstart" in window ||
+        (typeof navigator !== "undefined" && navigator.maxTouchPoints > 0);
+      const isWideScreen = window.innerWidth >= 1024;
 
-    if (!hasFinePointer || prefersReducedMotion) {
+      return (
+        hasHover &&
+        hasFinePointer &&
+        !isCoarse &&
+        !isTouch &&
+        isWideScreen &&
+        !prefersReducedMotion
+      );
+    };
+
+    if (!checkIsDesktopPC()) {
       return;
     }
 
@@ -34,6 +51,14 @@ export default function CustomCursor() {
     const handleMouseEnter = () => setIsVisible(true);
     const handleMouseLeave = () => setIsVisible(false);
 
+    // If user touches the screen at any moment, immediately disable custom cursor
+    const handleTouch = () => {
+      if (active) {
+        setIsEnabled(false);
+        setIsVisible(false);
+      }
+    };
+
     const handleElementHover = (e: MouseEvent) => {
       const target = e.target as HTMLElement | null;
       if (!target) return;
@@ -44,8 +69,9 @@ export default function CustomCursor() {
       setIsHovered(!!interactive);
     };
 
-    window.addEventListener("mousemove", handleMouseMove);
-    window.addEventListener("mousemove", handleElementHover);
+    window.addEventListener("mousemove", handleMouseMove, { passive: true });
+    window.addEventListener("mousemove", handleElementHover, { passive: true });
+    window.addEventListener("touchstart", handleTouch, { passive: true });
     document.addEventListener("mouseenter", handleMouseEnter);
     document.addEventListener("mouseleave", handleMouseLeave);
 
@@ -53,10 +79,11 @@ export default function CustomCursor() {
       active = false;
       window.removeEventListener("mousemove", handleMouseMove);
       window.removeEventListener("mousemove", handleElementHover);
+      window.removeEventListener("touchstart", handleTouch);
       document.removeEventListener("mouseenter", handleMouseEnter);
       document.removeEventListener("mouseleave", handleMouseLeave);
     };
-  }, [isVisible]);
+  }, []);
 
   if (!isEnabled || !isVisible) return null;
 
@@ -64,14 +91,14 @@ export default function CustomCursor() {
     <>
       {/* Precision Center Dot */}
       <div
-        className="fixed top-0 left-0 w-2 h-2 -ml-1 -mt-1 rounded-full bg-primary pointer-events-none z-[9999] transition-transform duration-75 ease-out shadow-[0_0_10px_rgba(77,142,255,0.8)]"
+        className="custom-cursor-element fixed top-0 left-0 w-2 h-2 -ml-1 -mt-1 rounded-full bg-primary pointer-events-none z-[9999] transition-transform duration-75 ease-out shadow-[0_0_10px_rgba(77,142,255,0.8)]"
         style={{
           transform: `translate3d(${position.x}px, ${position.y}px, 0)`,
         }}
       />
       {/* Expanding Ambient Ring */}
       <div
-        className={`fixed top-0 left-0 pointer-events-none z-[9998] rounded-full border border-primary/40 transition-all duration-200 ease-out ${
+        className={`custom-cursor-element fixed top-0 left-0 pointer-events-none z-[9998] rounded-full border border-primary/40 transition-all duration-200 ease-out ${
           isHovered
             ? "w-12 h-12 -ml-6 -mt-6 bg-primary/10 border-primary scale-110 shadow-[0_0_20px_rgba(59,130,246,0.35)]"
             : "w-7 h-7 -ml-3.5 -mt-3.5 opacity-60"

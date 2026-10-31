@@ -49,15 +49,26 @@ export default function Header() {
       }`}
     >
       <div className="h-14 sm:h-16 w-full max-w-[1280px] mx-auto px-4 sm:px-6 flex items-center justify-between bg-surface-container-lowest/80 backdrop-blur-xl border border-outline-variant/30 rounded-full shadow-[0_4px_20px_rgba(0,0,0,0.5)]">
-        {/* Brand / Logo */}
+        {/* Brand / Logo with Profile Photo */}
         <Link
           href="#"
+          onClick={(e) => {
+            e.preventDefault();
+            window.scrollTo({ top: 0, behavior: "smooth" });
+          }}
           className="flex items-center gap-2.5 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded-full p-1"
-          aria-label="Inicio del portafolio"
+          aria-label="Inicio del portafolio - Oussama Zazou"
         >
-          <span className="flex items-center justify-center w-8 h-8 rounded-full bg-surface-container-high font-syne text-sm font-bold text-primary tracking-tight transition-transform duration-300 group-hover:scale-105 border border-primary/20">
-            {portfolioContent.nav.brand}
-          </span>
+          <div className="relative w-8 h-8 rounded-full p-[1.5px] bg-gradient-to-tr from-primary via-secondary-container to-accent-main overflow-hidden shadow-sm transition-transform duration-300 group-hover:scale-110">
+            <Image
+              src={portfolioContent.personal.profileImage}
+              alt={portfolioContent.personal.name}
+              width={32}
+              height={32}
+              className="w-full h-full rounded-full object-cover"
+              priority
+            />
+          </div>
           <span className="hidden sm:inline-block font-syne text-xs md:text-sm font-bold text-on-surface tracking-tight uppercase group-hover:text-primary transition-colors">
             {portfolioContent.nav.brandFullName}
           </span>
@@ -79,7 +90,7 @@ export default function Header() {
           ))}
         </nav>
 
-        {/* Right CTA & Avatar */}
+        {/* Right CTA */}
         <div className="flex items-center gap-2.5 sm:gap-3">
           <a
             href={portfolioContent.nav.ctaCv.href}
@@ -88,17 +99,6 @@ export default function Header() {
             <span>{portfolioContent.nav.ctaCv.label}</span>
             <ArrowUpRight className="w-3.5 h-3.5" />
           </a>
-
-          <div className="relative w-7 h-7 sm:w-8 sm:h-8 rounded-full p-[1px] bg-gradient-to-tr from-primary to-accent-main overflow-hidden shadow-sm">
-            <Image
-              src={portfolioContent.personal.profileImage}
-              alt={portfolioContent.personal.profileImageAlt}
-              width={32}
-              height={32}
-              className="w-full h-full rounded-full object-cover"
-              priority
-            />
-          </div>
 
           {/* Mobile Menu Toggle Button */}
           <button

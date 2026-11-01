@@ -50,7 +50,9 @@ export const portfolioContent = {
     website: null,
     github: "https://github.com/zaos22",
     linkedin: "https://www.linkedin.com/in/zaos/",
-    cv: "[URL_CV]", // TODO: rellenar con URL real del CV
+    cv: "/files/MyCV_en.pdf",
+    cvEs: "/files/MyCV_es.pdf",
+    cvEn: "/files/MyCV_en.pdf",
     profileImage: "/img/foto-perfil.png",
     profileImageAlt: "Fotografía de Oussama Zazou",
   },
@@ -298,8 +300,8 @@ export const portfolioContent = {
       },
       {
         label: "Descargar CV",
-        href: "[URL_CV]", // TODO: rellenar con enlace real
-        isPlaceholder: true,
+        href: "/files/MyCV_en.pdf",
+        isPlaceholder: false,
         type: "cv",
       },
       {

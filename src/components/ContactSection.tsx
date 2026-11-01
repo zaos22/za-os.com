@@ -44,12 +44,29 @@ function MagneticButtonWrapper({
       ? "bg-surface-container-high hover:bg-surface-container-highest text-on-surface border border-outline-variant/50"
       : "bg-surface-container/60 hover:bg-surface-container-high text-on-surface border border-outline-variant/30";
 
+  const handleCvDownload = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    if (button.type !== "cv") return;
+    e.preventDefault();
+    const currentLang =
+      typeof window !== "undefined" ? localStorage.getItem("preferred_lang") : "en";
+    const isSpanish = currentLang === "es";
+    const fileName = isSpanish ? "MyCV_es.pdf" : "MyCV_en.pdf";
+    const link = document.createElement("a");
+    link.href = `/files/${fileName}`;
+    link.download = fileName;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   return (
     <a
       ref={btnRef}
       href={button.href}
-      target={button.isPlaceholder ? undefined : "_blank"}
-      rel="noreferrer"
+      download={button.type === "cv" ? true : undefined}
+      target={button.type === "cv" || button.isPlaceholder ? undefined : "_blank"}
+      rel={button.type === "cv" ? undefined : "noreferrer"}
+      onClick={button.type === "cv" ? handleCvDownload : undefined}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
       style={{
